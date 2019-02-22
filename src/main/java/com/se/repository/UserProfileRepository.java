@@ -10,7 +10,7 @@ import static java.util.Optional.ofNullable;
 
 @Service
 public class UserProfileRepository {
-    Map<String, UserProfile> userProfileMap = new HashMap<>();
+    Map<Integer, UserProfile> userProfileMap = new HashMap<>();
 
     public Optional<UserProfile > findUserById(String id) {
         return ofNullable(userProfileMap.get(id));

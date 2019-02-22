@@ -41,7 +41,7 @@ public class UserManagementController  {
 
         Optional<UserInfo> profile = userInfoRepository.findByUsername(username);
         if(profile.isPresent()){
-            return new ResponseEntity<String>(profile.get().getId(), HttpStatus.OK);
+            return new ResponseEntity<String>(String.valueOf(profile.get().getId()), HttpStatus.OK);
         }
         throw new ResourceNotFoundException("Profile not found with id: " + id);
     }
@@ -52,13 +52,13 @@ public class UserManagementController  {
     public ResponseEntity<String> addGuest(@RequestParam("username") String username,
                                                 @RequestParam("password") String password){
 
-        UserInfo userInfo = UserInfo.builder().id(String.valueOf(id++)).username(username).password(password).build();
+        UserInfo userInfo = UserInfo.builder().id(id++).username(username).password(password).build();
         userInfoRepository.save(userInfo);
         if (this.userProfileRepository.addNewProfile(userInfo)) {
-            return new ResponseEntity<String>(userInfo.getId(), HttpStatus.CREATED);
+            return new ResponseEntity<String>(String.valueOf(userInfo.getId()), HttpStatus.CREATED);
         }
 
-        return new ResponseEntity<>("User already exist", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<String>("User already exist", HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/user/{id}")

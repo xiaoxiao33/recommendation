@@ -6,20 +6,21 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
  * This class represents an instance of user profile
  */
 @Entity
-@Table(name="youhan.userprofile")
+@Table(name="public.userprofile")
 public class UserProfile {
 
     public UserProfile(UserInfo userInfo) {
         u_id = userInfo.getId();
         username = userInfo.getUsername();
     }
-
+    @Id
     @Getter
     @Setter
     @Column(name = "u_id")

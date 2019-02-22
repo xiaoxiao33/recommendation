@@ -14,12 +14,13 @@ import java.util.UUID;
 @Table(name="youhan.userinfo")
 public class UserInfo {
 
-    @Id
+
     @Getter
     @Setter
+    @Id
     @GeneratedValue(generator="increment")
     @Column(name = "u_id")
-    private int u_id;
+    private int id;
 
     @Getter
     @Setter
@@ -29,7 +30,7 @@ public class UserInfo {
     @Getter
     @Setter
     @Column(name = "passwd")
-    private String passwd;
+    private String password;
 
 
 

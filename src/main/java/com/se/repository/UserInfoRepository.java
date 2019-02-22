@@ -11,7 +11,7 @@ import java.util.*;
 @Service
 public class UserInfoRepository {
 
-    Map<String, UserInfo> userInfoMap = new HashMap<>();
+    Map<Integer, UserInfo> userInfoMap = new HashMap<>();
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
