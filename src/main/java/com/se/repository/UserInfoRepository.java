@@ -87,7 +87,8 @@ public class UserInfoRepository {
             Root<UserInfo> root = query.from(UserInfo.class);
             query.select(root).where(builder.equal(root.get("username"), username));
             Query<UserInfo> q = session.createQuery(query);
-            UserInfo user = q.getSingleResult();
+            //avoid exception, set max results as 1
+            UserInfo user = q.setMaxResults(1).getSingleResult();
             System.out.println(user.getId()+user.getUsername()+user.getPassword());
             opt = Optional.of(user);
             transaction.commit();
@@ -102,10 +103,11 @@ public class UserInfoRepository {
     }
 
     public static void main(String[] args){
+        System.out.println("print user info");
         UserInfoRepository u = new UserInfoRepository();
-        UserInfo user = UserInfo.builder().id(3).username("Adam").password("woshidalao").build();
+        UserInfo user = UserInfo.builder().username("Chuyi").password("woshidalao").build();
         u.save(user);
-        Optional<UserInfo> opt = u.findByUsername("amy");
+        Optional<UserInfo> opt = u.findByUsername("Chuyi");
         u.allUsers();
     }
 

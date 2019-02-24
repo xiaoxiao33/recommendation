@@ -6,6 +6,7 @@ create table mealdate.userInfo(
 
 create table mealdate.userProfile(
 	u_id serial primary key,
+	username varchar(30),
 	gender integer,
 	major varchar(30),
 	u_age integer,

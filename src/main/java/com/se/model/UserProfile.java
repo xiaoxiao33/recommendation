@@ -1,53 +1,48 @@
 package com.se.model;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import com.se.model.UserInfo;
 /**
  * This class represents an instance of user profile
  */
 @Entity
-@Table(name="public.userprofile")
+@Builder(toBuilder = true)
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@Setter
+@Getter
 public class UserProfile {
 
     public UserProfile(UserInfo userInfo) {
-        u_id = userInfo.getId();
+        id = userInfo.getId();
         username = userInfo.getUsername();
+        gender=-1;
+        major="unknow";
+        age=-1;
+        year="unknow";
     }
-    @Id
-    @Getter
-    @Setter
-    @Column(name = "u_id")
-    private int u_id;  // Primary Key for finding a user.
 
-    @Getter
-    @Setter
+    // Foreign key dependency not set yet
+    @Id
+    @GeneratedValue(generator="increment")
+    @Column(name="u_id")
+    private int id;  // Primary Key for finding a user.
+
     @Column(name = "username")
     private String username;
 
-    @Getter
-    @Setter
     @Column(name = "gender")
     private int gender;
 
-    @Getter
-    @Setter
     @Column(name = "major")
     private String major;
 
-    @Getter
-    @Setter
-    @Column(name = "age")
+    @Column(name = "u_age")
     private int age;
 
-    @Getter
-    @Setter
-    @Column(name = "year")
+    @Column(name = "u_year")
     private String year;
 }
