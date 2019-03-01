@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin("http://localhost:8100")
 public class UserManagementController  {
 
     private static int id = 1;
