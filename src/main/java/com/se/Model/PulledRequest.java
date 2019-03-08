@@ -3,6 +3,7 @@ package com.se.Model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Builder(toBuilder = true)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
@@ -10,11 +11,13 @@ import javax.persistence.*;
 @Setter
 @Getter
 @Entity
-public class PulledRequest {
+public class PulledRequest implements Serializable {
+    @GeneratedValue(generator="auto")
     @Id
     @Column(name = "sender")
     private int sender;
 
+    @GeneratedValue(generator="auto")
     @Id
     @Column(name = "receiver")
     private int receiver;  // unique to the user
