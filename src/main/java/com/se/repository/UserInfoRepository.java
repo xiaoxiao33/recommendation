@@ -2,6 +2,8 @@ package com.se.repository;
 
 import com.se.model.UserInfo;
 import com.se.model.UserProfile;
+import com.se.repository.UserProfileRepository;
+
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -32,6 +34,16 @@ public class UserInfoRepository {
             transaction = session.beginTransaction();
             session.save(user);
             transaction.commit();
+
+            //profile start
+            UserProfileRepository upr = new UserProfileRepository();
+            UserProfile userProfile = UserProfile.builder().gender(1).major("CS").age(23).year("1996").username("Jingkuan").build();
+            upr.save(userProfile);
+            Optional<UserProfile> opt = upr.findUserByName("Jingkuan");
+            opt = upr.findUserById(1);
+            upr.allUsers();
+            //profile end
+
 
         } catch (Exception e) {
             e.printStackTrace();
