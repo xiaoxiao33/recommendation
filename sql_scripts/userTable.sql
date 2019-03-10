@@ -1,7 +1,7 @@
 create table mealdate.userInfo(
 	u_id serial primary key,
 	username varchar(30) unique,
-	passwd varchar(20) not null,
+	passwd varchar(100) not null,
 	email varchar(30) unique
 );
 
