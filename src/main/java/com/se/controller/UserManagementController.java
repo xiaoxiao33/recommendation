@@ -53,7 +53,7 @@ public class UserManagementController  {
 
 
     @PostMapping("/register")
-    public ResponseEntity<String> addUser(@RequestParam("username") String username,
+    public ResponseEntity<Integer> addUser(@RequestParam("username") String username,
                                           @RequestParam("email") String email,
                                           @RequestParam("password") String password,
                                           HttpSession session){
@@ -76,7 +76,7 @@ public class UserManagementController  {
 
         // Save id to session
         session.setAttribute("id", newUserInfo.getId());
-        return new ResponseEntity<String>(String.valueOf(newUserInfo.getId()), HttpStatus.CREATED);
+        return new ResponseEntity<Integer>(newUserInfo.getId(), HttpStatus.CREATED);
 
     }
 
