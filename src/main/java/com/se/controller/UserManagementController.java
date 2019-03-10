@@ -9,14 +9,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @CrossOrigin("http://localhost:8100")
 public class UserManagementController  {
-
-    private static int id = 1;
 
     private final UserProfileRepository userProfileRepository;
     private final UserInfoRepository userInfoRepository;
@@ -27,59 +26,81 @@ public class UserManagementController  {
         this.userInfoRepository = userInfoRepository;
     }
 
+
     @GetMapping("/admin/profiles")
     public List<UserProfile> getAllProfile(){
         return this.userProfileRepository.findAllProfile();
     }
+
 
     @GetMapping("/admin/users")
     public List<UserInfo> getAllUsers(){
         return this.userInfoRepository.findAllInfo();
     }
 
+    // Login using basic authentication.
     @GetMapping("/login/{username}")
-    public ResponseEntity<String> getUser(@PathVariable("username") String username){
+    public ResponseEntity<String> getUser(@PathVariable("username") String username, HttpSession session){
 
-        Optional<UserInfo> profile = userInfoRepository.findInfoByUsername(username);
-        if(profile.isPresent()){
-            return new ResponseEntity<String>(String.valueOf(profile.get().getId()), HttpStatus.OK);
+        Optional<UserInfo> userInfo = userInfoRepository.findInfoByUsername(username);
+        if(userInfo.isPresent()){
+            session.setAttribute("id", userInfo.get().getId());
+            return new ResponseEntity<String>(String.valueOf(userInfo.get().getId()), HttpStatus.OK);
         }
-        throw new ResourceNotFoundException("Profile not found with id: " + id);
+
+        return new ResponseEntity<>("User not found with id: " + userInfo.get().getId(), HttpStatus.NOT_FOUND);
     }
 
 
     @PostMapping("/register")
     public ResponseEntity<String> addUser(@RequestParam("username") String username,
-                                                @RequestParam("password") String password){
+                                          @RequestParam("email") String email,
+                                          @RequestParam("password") String password,
+                                          HttpSession session){
+        // Check if email address is from yale.edu, xiaoxiao.ouyang@yale.edu
+        int correctIdx = email.length() - 8;
+        if (email == null || email.length() <= 8 || email.lastIndexOf("@yale.edu") != correctIdx ) {
+           return new ResponseEntity("Invalid Email Address", HttpStatus.BAD_REQUEST);
+        }
+
         // check for existing user
-        Optional<UserInfo> profile = userInfoRepository.findInfoByUsername(username);
-        if (profile.isPresent()) {
+        Optional<UserInfo> userInfo = userInfoRepository.findInfoByUsername(username);
+        if (userInfo.isPresent()) {
             return new ResponseEntity("User already exist", HttpStatus.CONFLICT);
         }
-        UserInfo userInfo = UserInfo.builder().username(username).password(password).build();
-        this.userInfoRepository.saveInfo(userInfo);
-        return new ResponseEntity<String>(String.valueOf(userInfo.getId()), HttpStatus.CREATED);
+
+        UserInfo newUserInfo = UserInfo.builder().username(username).password(password).email(email).build();
+        // Save userInfo to userInfoRepository, userProfileRepository updated at the same time
+        // ? handle failure of the API
+        this.userInfoRepository.saveInfo(newUserInfo);
+
+        // Save id to session
+        session.setAttribute("id", newUserInfo.getId());
+        return new ResponseEntity<String>(String.valueOf(newUserInfo.getId()), HttpStatus.CREATED);
 
     }
 
-    @GetMapping("/user/{id}")
-    public ResponseEntity<UserProfile> getUserProfile(@PathVariable int id){
+    @GetMapping("/userProfile")
+    public ResponseEntity<?> getUserProfile(HttpSession session){
+        int id = (Integer)session.getAttribute("id");
         Optional<UserProfile> profile = this.userProfileRepository.findProfileById(id);
         if(profile.isPresent()){
             return new ResponseEntity<UserProfile>(profile.get(), HttpStatus.OK);
         }
-        throw new ResourceNotFoundException("Profile not found with id: " + id);
+        return new ResponseEntity<>("User not found with id: " + id, HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("updateProfile/{id}")
-    public ResponseEntity<UserProfile> updateUserProfile(@RequestBody UserProfile userProfile) {
-        Optional<UserProfile> profile = this.userProfileRepository.findProfileById(userProfile.getId());
+    @PostMapping("/updateProfile")
+    public ResponseEntity<String> updateUserProfile(@RequestBody UserProfile userProfile, HttpSession session) {
+        int id = (Integer)session.getAttribute("id");
+        Optional<UserProfile> profile = this.userProfileRepository.findProfileById(id);
+
+        // Check if the profile we want to update exists
         if (profile.isPresent()) {
             userProfileRepository.updateProfile(userProfile);
-            return new ResponseEntity<>(userProfile, HttpStatus.OK);
-        } else {
-            throw new ResourceNotFoundException("Profile not found with id: " + id);
+            return new ResponseEntity<>("Updated successfully", HttpStatus.OK);
         }
-    }
 
+        return new ResponseEntity<>("User not found with id: " + userProfile.getId(), HttpStatus.NOT_FOUND);
+    }
 }

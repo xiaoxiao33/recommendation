@@ -28,6 +28,9 @@ public class UserInfo {
     @Column(name = "passwd")
     private String password;
 
+    @Column(name = "email")
+    private String email;
+
 }
 
 /*@Builder

@@ -36,16 +36,6 @@ public class UserInfoRepository {
             session.save(user);
             transaction.commit();
 
-            //profile start
-            UserProfileRepository upr = new UserProfileRepository();
-            UserProfile userProfile = UserProfile.builder().gender(1).major("CS").age(23).year("1996").username("Jingkuan").build();
-            upr.save(userProfile);
-            Optional<UserProfile> opt = upr.findUserByName("Jingkuan");
-            opt = upr.findUserById(1);
-            upr.allUsers();
-            //profile end
-
-
         } catch (Exception e) {
             e.printStackTrace();
             if (transaction != null) {
