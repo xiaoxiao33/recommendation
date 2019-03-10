@@ -1,6 +1,5 @@
 package com.se.service;
 
-import com.se.repository.IntendSlotRepository;
 import com.se.vo.IntendVO;
 import com.se.vo.UserBriefVO;
 import org.springframework.stereotype.Service;

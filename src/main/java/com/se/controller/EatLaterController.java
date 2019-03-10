@@ -1,6 +1,5 @@
 package com.se.controller;
 
-import com.se.repository.IntendSlotRepository;
 import com.se.service.RecommedationService;
 import com.se.vo.IntendVO;
 import com.se.vo.InvitationVO;
