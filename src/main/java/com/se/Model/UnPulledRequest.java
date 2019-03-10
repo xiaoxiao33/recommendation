@@ -3,6 +3,7 @@ package com.se.Model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Builder(toBuilder = true)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @Setter
 @Getter
 @Entity
-public class UnPulledRequest {
+public class UnPulledRequest implements Serializable {
     @Id
     @Column(name = "sender")
     private int sender;

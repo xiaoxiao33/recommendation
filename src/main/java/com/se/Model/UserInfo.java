@@ -17,7 +17,6 @@ import java.util.UUID;
 @Entity
 public class UserInfo {
 
-
     @Id
     @GeneratedValue(generator="increment")
     @Column(name = "u_id")

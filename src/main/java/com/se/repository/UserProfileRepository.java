@@ -15,9 +15,9 @@ import static java.util.Optional.ofNullable;
 
 @Service
 public class UserProfileRepository {
-    Map<Integer, UserProfile> userProfileMap = new HashMap<>();
 
-    public UserProfile save(UserProfile user) {
+    // Save an existing user profile
+    public UserProfile updateProfile(UserProfile user) {
         SessionFactory factory = new Configuration().configure().buildSessionFactory();
 
         Transaction transaction = null;
@@ -35,7 +35,7 @@ public class UserProfileRepository {
         return user;
     }
 
-    public Optional<UserProfile > findUserById(int id) {
+    public Optional<UserProfile > findProfileById(int id) {
         SessionFactory factory = new Configuration().configure().buildSessionFactory();
         Optional<UserProfile> opt = null;
 
@@ -63,7 +63,7 @@ public class UserProfileRepository {
         return opt;
     }
 
-    public Optional<UserProfile > findUserByName(String name) {
+    public Optional<UserProfile > findProfileByName(String name) {
         SessionFactory factory = new Configuration().configure().buildSessionFactory();
         Optional<UserProfile> opt = null;
 
@@ -91,14 +91,8 @@ public class UserProfileRepository {
         return opt;
     }
 
-    public boolean addNewProfile(UserInfo userInfo) {
-        userProfileMap.put(userInfo.getId(), new UserProfile(userInfo));
-        UserProfile userProfile = new UserProfile(userInfo);
-        save(userProfile);
-        return true;
-    }
 
-    public List<UserProfile> findAll() {
+    public List<UserProfile> findAllProfile() {
         SessionFactory factory = new Configuration().configure().buildSessionFactory();
         List<UserProfile> result = null;
 
@@ -126,41 +120,13 @@ public class UserProfileRepository {
         return null;
     }
 
-    public List<UserProfile> allUsers() {
-        SessionFactory factory = new Configuration().configure().buildSessionFactory();
-        List<UserProfile> result = null;
-
-        Transaction transaction = null;
-        try (Session session = factory.openSession()) {
-            transaction = session.beginTransaction();
-
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<UserProfile> query = builder.createQuery(UserProfile.class);
-            Root<UserProfile> root = query.from(UserProfile.class);
-            query.select(root);
-            Query<UserProfile> q = session.createQuery(query);
-            result = q.list();
-            for(UserProfile u: result){
-                System.out.println(u.getId()+" "+u.getUsername());
-            }
-            transaction.commit();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            if (transaction != null) {
-                transaction.rollback();
-            }
-        }
-        return result;
-    }
-
     public static void main(String[] args){
         System.out.println("print user profile");
         UserProfileRepository u = new UserProfileRepository();
         UserProfile user = UserProfile.builder().gender(1).major("CS").age(23).year("1996").username("Jingkuan").build();
-        u.save(user);
-        Optional<UserProfile> opt = u.findUserByName("Jingkuan");
-        opt = u.findUserById(1);
-        u.allUsers();
+        u.updateProfile(user);
+        Optional<UserProfile> opt = u.findProfileByName("Jingkuan");
+        opt = u.findProfileById(1);
+        u.findAllProfile();
     }
 }
