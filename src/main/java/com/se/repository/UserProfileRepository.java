@@ -126,34 +126,6 @@ public class UserProfileRepository {
         return null;
     }
 
-    public List<UserProfile> allUsers() {
-        SessionFactory factory = new Configuration().configure().buildSessionFactory();
-        List<UserProfile> result = null;
-
-        Transaction transaction = null;
-        try (Session session = factory.openSession()) {
-            transaction = session.beginTransaction();
-
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<UserProfile> query = builder.createQuery(UserProfile.class);
-            Root<UserProfile> root = query.from(UserProfile.class);
-            query.select(root);
-            Query<UserProfile> q = session.createQuery(query);
-            result = q.list();
-            for(UserProfile u: result){
-                System.out.println(u.getId()+" "+u.getUsername());
-            }
-            transaction.commit();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            if (transaction != null) {
-                transaction.rollback();
-            }
-        }
-        return result;
-    }
-
     public static void main(String[] args){
         System.out.println("print user profile");
         UserProfileRepository u = new UserProfileRepository();
@@ -161,6 +133,6 @@ public class UserProfileRepository {
         u.save(user);
         Optional<UserProfile> opt = u.findUserByName("Jingkuan");
         opt = u.findUserById(1);
-        u.allUsers();
+        u.findAll();
     }
 }

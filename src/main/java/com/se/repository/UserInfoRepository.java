@@ -26,6 +26,7 @@ public class UserInfoRepository {
 
     // encrypt?
     public UserInfo save(UserInfo user) {
+        // Need to update ID
         SessionFactory factory = new Configuration().configure().buildSessionFactory();
         List<UserInfo> result = null;
 
@@ -37,23 +38,20 @@ public class UserInfoRepository {
 
             //profile start
             UserProfileRepository upr = new UserProfileRepository();
-            UserProfile userProfile = UserProfile.builder().gender(1).major("CS").age(23).year("1996").username("Jingkuan").build();
+            UserProfile userProfile = UserProfile.builder().id(user.getId()).gender(1).major("CS").age(23).year("1996").username("Jingkuan").build();
             upr.save(userProfile);
             Optional<UserProfile> opt = upr.findUserByName("Jingkuan");
             opt = upr.findUserById(1);
-            upr.allUsers();
+            upr.findAll();
+
             //profile end
-
-
         } catch (Exception e) {
             e.printStackTrace();
             if (transaction != null) {
                 transaction.rollback();
             }
         }
-        return user;//??
-        /*user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        return userInfoMap.put(user.getId(), user);*/
+        return user;
     }
 
     public List<UserInfo> allUsers() {
@@ -82,7 +80,6 @@ public class UserInfoRepository {
             }
         }
         return result;
-        //return new ArrayList<UserInfo>(userInfoMap.values());
     }
 
 
