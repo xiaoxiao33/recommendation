@@ -40,7 +40,7 @@ public class UserInfoRepository {
             //profile start
             UserProfileRepository upr = new UserProfileRepository();
             UserProfile userProfile = UserProfile.builder().id(user.getId()).gender(1).major("CS").age(23).year("1996").username("Jingkuan").build();
-            upr.save(userProfile);
+            upr.saveProfile(userProfile);
             Optional<UserProfile> opt = upr.findUserByName("Jingkuan");
             opt = upr.findUserById(1);
             upr.findAll();
