@@ -12,6 +12,7 @@ import java.io.Serializable;
 @Getter
 @Entity
 public class PulledRequest implements Serializable {
+
     @GeneratedValue(generator="auto")
     @Id
     @Column(name = "sender")
