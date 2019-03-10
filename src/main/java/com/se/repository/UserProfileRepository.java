@@ -17,7 +17,7 @@ import static java.util.Optional.ofNullable;
 public class UserProfileRepository {
 
     // Save an existing user profile
-    public UserProfile updateProfile(UserProfile user) {
+    public UserProfile saveProfile(UserProfile user) {
         SessionFactory factory = new Configuration().configure().buildSessionFactory();
 
         Transaction transaction = null;
@@ -124,7 +124,7 @@ public class UserProfileRepository {
         System.out.println("print user profile");
         UserProfileRepository u = new UserProfileRepository();
         UserProfile user = UserProfile.builder().gender(1).major("CS").age(23).year("1996").username("Jingkuan").build();
-        u.save(user);
+        u.saveProfile(user);
         Optional<UserProfile> opt = u.findProfileByName("Jingkuan");
         opt = u.findProfileById(1);
         u.findAllProfile();
