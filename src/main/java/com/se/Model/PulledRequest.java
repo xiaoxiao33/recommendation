@@ -12,10 +12,13 @@ import java.io.Serializable;
 @Getter
 @Entity
 public class PulledRequest implements Serializable {
+
+    @GeneratedValue(generator="auto")
     @Id
     @Column(name = "sender")
     private int sender;
 
+    @GeneratedValue(generator="auto")
     @Id
     @Column(name = "receiver")
     private int receiver;  // unique to the user

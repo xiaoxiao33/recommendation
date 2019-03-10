@@ -5,7 +5,7 @@ create table mealdate.unPulledRequest(
 	end_time varchar(30) not null,
 	foreign key (sender) references mealdate.userInfo(u_id),
 	foreign key (receiver) references mealdate.userInfo(u_id),
-	primary key(sender, receiver)
+	primary key(sender, receiver, start_time, end_time)
 );
 
 create table mealdate.PulledRequest(
@@ -16,5 +16,5 @@ create table mealdate.PulledRequest(
 	state char not null,
 	foreign key (sender) references mealdate.userInfo(u_id),
 	foreign key (receiver) references mealdate.userInfo(u_id),
-	primary key (sender, receiver)
+	primary key (sender, receiver, start_time, end_time)
 );
