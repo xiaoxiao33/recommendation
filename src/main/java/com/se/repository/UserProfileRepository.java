@@ -2,6 +2,7 @@ package com.se.repository;
 
 import com.se.model.UserInfo;
 import com.se.model.UserProfile;
+import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -16,8 +17,8 @@ import static java.util.Optional.ofNullable;
 @Service
 public class UserProfileRepository {
 
-    // Save an existing user profile
-    public UserProfile updateProfile(UserProfile user) {
+    // Save a new user profile
+    public UserProfile saveProfile(UserProfile user) {
         SessionFactory factory = new Configuration().configure().buildSessionFactory();
 
         Transaction transaction = null;
@@ -25,6 +26,37 @@ public class UserProfileRepository {
         try (Session session = factory.openSession()) {
             transaction = session.beginTransaction();
             session.save(user);
+            transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        }
+        return user;
+    }
+
+    //save an existing user profile
+    public UserProfile updateProfile(UserProfile user){
+        SessionFactory factory = new Configuration().configure().buildSessionFactory();
+
+        Transaction transaction = null;
+
+        try (Session session = factory.openSession()) {
+            transaction = session.beginTransaction();
+
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaUpdate<UserProfile> update = builder.createCriteriaUpdate(UserProfile.class);
+            Root root = update.from(UserProfile.class);
+
+            update.set("username", user.getUsername());
+            update.set("gender", user.getGender());
+            update.set("major", user.getMajor());
+            update.set("age", user.getAge());
+            update.set("year", user.getYear());
+            update.where(builder.equal(root.get("id"), user.getId()));
+            session.createQuery(update).executeUpdate();
+
             transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -124,7 +156,7 @@ public class UserProfileRepository {
         System.out.println("print user profile");
         UserProfileRepository u = new UserProfileRepository();
         UserProfile user = UserProfile.builder().gender(1).major("CS").age(23).year("1996").username("Jingkuan").build();
-        u.updateProfile(user);
+        u.saveProfile(user);
         Optional<UserProfile> opt = u.findProfileByName("Jingkuan");
         opt = u.findProfileById(1);
         u.findAllProfile();

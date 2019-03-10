@@ -27,24 +27,21 @@ public class UserInfoRepository {
     // Save a user's info
     public UserInfo saveInfo(UserInfo user) {
         SessionFactory factory = new Configuration().configure().buildSessionFactory();
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         List<UserInfo> result = null;
 
         Transaction transaction = null;
         try (Session session = factory.openSession()) {
             transaction = session.beginTransaction();
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             session.save(user);
             transaction.commit();
-
         } catch (Exception e) {
             e.printStackTrace();
             if (transaction != null) {
                 transaction.rollback();
             }
         }
-        return user;//??
-        /*user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        return userInfoMap.put(user.getId(), user);*/
+        return user;
     }
 
     public List<UserInfo> findAllInfo() {
@@ -73,7 +70,6 @@ public class UserInfoRepository {
             }
         }
         return result;
-        //return new ArrayList<UserInfo>(userInfoMap.values());
     }
 
 
