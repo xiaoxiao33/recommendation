@@ -80,9 +80,8 @@ public class UserManagementController  {
 
     }
 
-    @GetMapping("/userProfile")
-    public ResponseEntity<?> getUserProfile(HttpSession session){
-        int id = (Integer)session.getAttribute("id");
+    @GetMapping("/userProfile/{id}")
+    public ResponseEntity<?> getUserProfile(@PathVariable("Id") int id){
         Optional<UserProfile> profile = this.userProfileRepository.findProfileById(id);
         if(profile.isPresent()){
             return new ResponseEntity<UserProfile>(profile.get(), HttpStatus.OK);
