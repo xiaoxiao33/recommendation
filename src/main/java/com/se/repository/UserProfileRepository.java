@@ -124,7 +124,7 @@ public class UserProfileRepository {
         System.out.println("print user profile");
         UserProfileRepository u = new UserProfileRepository();
         UserProfile user = UserProfile.builder().gender(1).major("CS").age(23).year("1996").username("Jingkuan").build();
-        u.updateProfile(user);
+        u.save(user);
         Optional<UserProfile> opt = u.findProfileByName("Jingkuan");
         opt = u.findProfileById(1);
         u.findAllProfile();
