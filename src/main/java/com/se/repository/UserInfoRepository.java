@@ -24,9 +24,10 @@ public class UserInfoRepository {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    // encrypt?
-    public UserInfo save(UserInfo user) {
+    // Save a user's info
+    public UserInfo saveInfo(UserInfo user) {
         SessionFactory factory = new Configuration().configure().buildSessionFactory();
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         List<UserInfo> result = null;
 
         Transaction transaction = null;
@@ -57,7 +58,7 @@ public class UserInfoRepository {
         return userInfoMap.put(user.getId(), user);*/
     }
 
-    public List<UserInfo> allUsers() {
+    public List<UserInfo> findAllInfo() {
         SessionFactory factory = new Configuration().configure().buildSessionFactory();
         List<UserInfo> result = null;
 
@@ -87,7 +88,7 @@ public class UserInfoRepository {
     }
 
 
-    public Optional<UserInfo> findByUsername(final String username) {
+    public Optional<UserInfo> findInfoByUsername(final String username) {
         SessionFactory factory = new Configuration().configure().buildSessionFactory();
         Optional<UserInfo> opt = null;
 
@@ -119,9 +120,9 @@ public class UserInfoRepository {
         System.out.println("print user info");
         UserInfoRepository u = new UserInfoRepository();
         UserInfo user = UserInfo.builder().username("Chuyi").password("woshidalao").build();
-        u.save(user);
-        Optional<UserInfo> opt = u.findByUsername("Chuyi");
-        u.allUsers();
+        u.saveInfo(user);
+        Optional<UserInfo> opt = u.findInfoByUsername("Chuyi");
+        u.findAllInfo();
     }
 
 }
