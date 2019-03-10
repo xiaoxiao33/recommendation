@@ -32,6 +32,7 @@ public class UserInfoRepository {
         Transaction transaction = null;
         try (Session session = factory.openSession()) {
             transaction = session.beginTransaction();
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             session.save(user);
             transaction.commit();
 
