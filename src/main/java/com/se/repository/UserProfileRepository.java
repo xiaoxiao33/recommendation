@@ -36,8 +36,10 @@ public class UserProfileRepository {
         return user;
     }
 
+
     //save an existing user profile
     public UserProfile updateProfile(UserProfile user){
+
         SessionFactory factory = new Configuration().configure().buildSessionFactory();
 
         Transaction transaction = null;
@@ -49,7 +51,6 @@ public class UserProfileRepository {
             CriteriaUpdate<UserProfile> update = builder.createCriteriaUpdate(UserProfile.class);
             Root root = update.from(UserProfile.class);
 
-            update.set("username", user.getUsername());
             update.set("gender", user.getGender());
             update.set("major", user.getMajor());
             update.set("age", user.getAge());
@@ -82,7 +83,7 @@ public class UserProfileRepository {
             Query<UserProfile> q = session.createQuery(query);
             //avoid exception, set max results as 1
             UserProfile user = q.setMaxResults(1).getSingleResult();
-            System.out.println(user.getId()+user.getUsername()+": Get by Id");
+            //System.out.println(user.getId()+user.getUsername()+": Get by Id");
             opt = Optional.of(user);
             transaction.commit();
 
@@ -110,7 +111,7 @@ public class UserProfileRepository {
             Query<UserProfile> q = session.createQuery(query);
             //avoid exception, set max results as 1
             UserProfile user = q.setMaxResults(1).getSingleResult();
-            System.out.println(user.getId()+user.getUsername()+": Get by name");
+            //System.out.println(user.getId()+user.getUsername()+": Get by name");
             opt = Optional.of(user);
             transaction.commit();
 
@@ -138,9 +139,9 @@ public class UserProfileRepository {
             query.select(root);
             Query<UserProfile> q = session.createQuery(query);
             result = q.list();
-            for(UserProfile u: result){
+            /*for(UserProfile u: result){
                 System.out.println(u.getId()+" "+u.getUsername());
-            }
+            }*/
             transaction.commit();
             return result;
         } catch (Exception e) {
@@ -153,12 +154,9 @@ public class UserProfileRepository {
     }
 
     public static void main(String[] args){
-        System.out.println("print user profile");
+        /*System.out.println("print user profile");
         UserProfileRepository u = new UserProfileRepository();
-        UserProfile user = UserProfile.builder().gender(1).major("CS").age(23).year("1996").username("Jingkuan").build();
-        u.saveProfile(user);
-        Optional<UserProfile> opt = u.findProfileByName("Jingkuan");
-        opt = u.findProfileById(1);
-        u.findAllProfile();
+        UserProfile profile = com.se.model.UserProfile.builder().id(1).major("STAT").age(23).year("2020").build();
+        u.updateProfile(profile);*/
     }
 }

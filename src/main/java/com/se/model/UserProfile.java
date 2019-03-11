@@ -18,11 +18,11 @@ public class UserProfile {
 
     public UserProfile(UserInfo userInfo) {
         id = userInfo.getId();
-        username = userInfo.getUsername();
         gender=-1;
         major="unknow";
         age=-1;
         year="unknow";
+        availability = 'T';
     }
 
     // Foreign key dependency not set yet
@@ -30,9 +30,6 @@ public class UserProfile {
     @GeneratedValue(generator="increment")
     @Column(name="u_id")
     private int id;  // Primary Key for finding a user.
-
-    @Column(name = "username")
-    private String username;
 
     @Column(name = "gender")
     private int gender;
@@ -45,4 +42,7 @@ public class UserProfile {
 
     @Column(name = "u_year")
     private String year;
+
+    @Column(name = "availability")
+    private char availability;
 }
