@@ -33,32 +33,6 @@ public class UserInfo {
 
 }
 
-/*@Builder
-@Entity
-@Table(name="public.userinfo")
-public class UserInfo {
 
-
-    @Getter
-    @Setter
-    @Id
-    @GeneratedValue(generator="increment")
-    @Column(name = "u_id")
-    @Builder.Default
-    private int id=1;
-
-    @Getter
-    @Setter
-    @Column(name = "username")
-    @Builder.Default
-    private String username="user";  // unique to the user
-
-    @Getter
-    @Setter
-    @Column(name = "passwd")
-    @Builder.Default
-    private String password="123";
-
-}*/
 
 
