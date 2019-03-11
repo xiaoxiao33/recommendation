@@ -58,7 +58,7 @@ public class UserManagementController  {
                                           @RequestParam("password") String password,
                                           HttpSession session){
         // Check if email address is from yale.edu, xiaoxiao.ouyang@yale.edu
-        int correctIdx = email.length() - 8;
+        int correctIdx = email.length() - 9;
         if (email == null || email.length() <= 8 || email.lastIndexOf("@yale.edu") != correctIdx ) {
            return new ResponseEntity("Invalid Email Address", HttpStatus.BAD_REQUEST);
         }
@@ -66,7 +66,7 @@ public class UserManagementController  {
         // check if the user name and email address already exisit
         Optional<UserInfo> userInfo = userInfoRepository.findInfoByUsername(username);
         if (userInfoRepository.findInfoByUsername(username).isPresent() ||
-                userInfoRepository.findInfoByEmail(username).isPresent()) {
+                userInfoRepository.findInfoByEmail(email).isPresent()) {
             return new ResponseEntity("User already exist", HttpStatus.CONFLICT);
         }
 
@@ -98,11 +98,6 @@ public class UserManagementController  {
         // Check if the profile associate with the id exists
         if (!profile.isPresent()) {
             return new ResponseEntity<>("User not found with id: " + userProfile.getId(), HttpStatus.NOT_FOUND);
-        }
-
-        // Check if the new user name already exists
-        if (this.userProfileRepository.findProfileByName(userProfile.getUsername()).isPresent()) {
-            return  new ResponseEntity("User name already exist", HttpStatus.CONFLICT);
         }
 
         // Update the corresponding profile with new parameters

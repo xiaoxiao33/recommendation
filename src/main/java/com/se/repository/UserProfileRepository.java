@@ -82,9 +82,13 @@ public class UserProfileRepository {
             query.select(root).where(builder.equal(root.get("id"), id));
             Query<UserProfile> q = session.createQuery(query);
             //avoid exception, set max results as 1
-            UserProfile user = q.setMaxResults(1).getSingleResult();
+            List<UserProfile> result = q.getResultList();
+            UserProfile userProfile = null;
+            if (!result.isEmpty()) {
+                userProfile = result.get(0);
+            }
             //System.out.println(user.getId()+user.getUsername()+": Get by Id");
-            opt = Optional.of(user);
+            opt = Optional.ofNullable(userProfile);
             transaction.commit();
 
         } catch (Exception e) {
@@ -110,9 +114,13 @@ public class UserProfileRepository {
             query.select(root).where(builder.equal(root.get("username"), name));
             Query<UserProfile> q = session.createQuery(query);
             //avoid exception, set max results as 1
-            UserProfile user = q.setMaxResults(1).getSingleResult();
+            List<UserProfile> result = q.getResultList();
+            UserProfile userProfile = null;
+            if (!result.isEmpty()) {
+                userProfile = result.get(0);
+            }
             //System.out.println(user.getId()+user.getUsername()+": Get by name");
-            opt = Optional.of(user);
+            opt = Optional.ofNullable(userProfile);
             transaction.commit();
 
         } catch (Exception e) {

@@ -84,7 +84,8 @@ public class UserInfoRepository {
         Optional<UserInfo> opt = null;
 
         Transaction transaction = null;
-        try (Session session = factory.openSession()) {
+        try {
+            Session session = factory.openSession();
             transaction = session.beginTransaction();
 
             CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -93,9 +94,48 @@ public class UserInfoRepository {
             query.select(root).where(builder.equal(root.get("username"), username));
             Query<UserInfo> q = session.createQuery(query);
             //avoid exception, set max results as 1
-            UserInfo user = q.setMaxResults(1).getSingleResult();
-            System.out.println(user.getId()+user.getUsername()+user.getPassword());
-            opt = Optional.of(user);
+
+            List<UserInfo> result = q.getResultList();
+            UserInfo userInfo = null;
+            if (!result.isEmpty()) {
+                userInfo = result.get(0);
+            }
+
+            //System.out.println(user.getId()+user.getUsername()+user.getPassword());
+            opt = Optional.ofNullable(userInfo);
+            transaction.commit();
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        }
+        return opt;
+    }
+
+    public Optional<UserInfo> findInfoByEmail(final String email) {
+        SessionFactory factory = new Configuration().configure().buildSessionFactory();
+        Optional<UserInfo> opt = null;
+
+        Transaction transaction = null;
+        try (Session session = factory.openSession()) {
+            transaction = session.beginTransaction();
+
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<UserInfo> query = builder.createQuery(UserInfo.class);
+            Root<UserInfo> root = query.from(UserInfo.class);
+            query.select(root).where(builder.equal(root.get("email"), email));
+            Query<UserInfo> q = session.createQuery(query);
+            //avoid exception, set max results as 1
+
+            List<UserInfo> result = q.getResultList();
+            UserInfo userInfo = null;
+            if (!result.isEmpty()) {
+                userInfo = result.get(0);
+            }
+            // System.out.println(user.getId()+user.getUsername()+user.getPassword());
+            opt = Optional.ofNullable(userInfo);
             transaction.commit();
 
         } catch (Exception e) {
@@ -121,9 +161,13 @@ public class UserInfoRepository {
             query.select(root).where(builder.equal(root.get("id"), id));
             Query<UserInfo> q = session.createQuery(query);
             //avoid exception, set max results as 1
-            UserInfo user = q.setMaxResults(1).getSingleResult();
+            List<UserInfo> result = q.getResultList();
+            UserInfo userInfo = null;
+            if (!result.isEmpty()) {
+                userInfo = result.get(0);
+            }
             //System.out.println(user.getId()+user.getUsername()+": Get by Id");
-            opt = Optional.of(user);
+            opt = Optional.ofNullable(userInfo);
             transaction.commit();
 
         } catch (Exception e) {
