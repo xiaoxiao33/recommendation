@@ -27,13 +27,19 @@ public class UserInfoRepository {
     // Save a user's info
     public UserInfo saveInfo(UserInfo user) {
         SessionFactory factory = new Configuration().configure().buildSessionFactory();
-        List<UserInfo> result = null;
 
         Transaction transaction = null;
         try (Session session = factory.openSession()) {
             transaction = session.beginTransaction();
+
+            bCryptPasswordEncoder = new BCryptPasswordEncoder();
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+
             session.save(user);
+
+            UserProfile profile = new UserProfile(user);
+            session.save(profile);
+
             transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -101,13 +107,71 @@ public class UserInfoRepository {
         return opt;
     }
 
+    public Optional<UserInfo > findInfoById(int id) {
+        SessionFactory factory = new Configuration().configure().buildSessionFactory();
+        Optional<UserInfo> opt = null;
+
+        Transaction transaction = null;
+        try (Session session = factory.openSession()) {
+            transaction = session.beginTransaction();
+
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<UserInfo> query = builder.createQuery(UserInfo.class);
+            Root<UserInfo> root = query.from(UserInfo.class);
+            query.select(root).where(builder.equal(root.get("id"), id));
+            Query<UserInfo> q = session.createQuery(query);
+            //avoid exception, set max results as 1
+            UserInfo user = q.setMaxResults(1).getSingleResult();
+            //System.out.println(user.getId()+user.getUsername()+": Get by Id");
+            opt = Optional.of(user);
+            transaction.commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        }
+        return opt;
+    }
+
+    public UserInfo updateInfo(UserInfo user){
+        SessionFactory factory = new Configuration().configure().buildSessionFactory();
+
+        Transaction transaction = null;
+
+        try (Session session = factory.openSession()) {
+            transaction = session.beginTransaction();
+
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaUpdate<UserInfo> update = builder.createCriteriaUpdate(UserInfo.class);
+            Root root = update.from(UserInfo.class);
+
+
+            update.set("username", user.getUsername());
+            update.set("email", user.getEmail());
+            update.where(builder.equal(root.get("id"), user.getId()));
+            session.createQuery(update).executeUpdate();
+
+            transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        }
+        return user;
+    }
+
     public static void main(String[] args){
-        System.out.println("print user info");
+        /*System.out.println("print user info");
         UserInfoRepository u = new UserInfoRepository();
-        UserInfo user = UserInfo.builder().username("Chuyi").password("woshidalao").build();
+        UserInfo user = UserInfo.builder().username("haha").password("woshidalao").email("haha@yale.edu").build();
         u.saveInfo(user);
-        Optional<UserInfo> opt = u.findInfoByUsername("Chuyi");
-        u.findAllInfo();
+        user = UserInfo.builder().username("lala").password("wobushidalao").email("fase@yale.edu").build();
+        u.saveInfo(user);
+        Optional<UserInfo> opt = u.findInfoByUsername("lala");
+        u.findAllInfo();*/
     }
 
 }
