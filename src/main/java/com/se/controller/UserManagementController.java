@@ -53,7 +53,7 @@ public class UserManagementController  {
 
 
     @PostMapping("/register")
-    public ResponseEntity<String> addUser(@RequestParam("username") String username,
+    public ResponseEntity<Integer> addUser(@RequestParam("username") String username,
                                           @RequestParam("email") String email,
                                           @RequestParam("password") String password,
                                           HttpSession session){
@@ -63,9 +63,10 @@ public class UserManagementController  {
            return new ResponseEntity("Invalid Email Address", HttpStatus.BAD_REQUEST);
         }
 
-        // check for existing user
+        // check if the user name and email address already exisit
         Optional<UserInfo> userInfo = userInfoRepository.findInfoByUsername(username);
-        if (userInfo.isPresent()) {
+        if (userInfoRepository.findInfoByUsername(username).isPresent() ||
+                userInfoRepository.findInfoByEmail(username).isPresent()) {
             return new ResponseEntity("User already exist", HttpStatus.CONFLICT);
         }
 
@@ -76,13 +77,12 @@ public class UserManagementController  {
 
         // Save id to session
         session.setAttribute("id", newUserInfo.getId());
-        return new ResponseEntity<String>(String.valueOf(newUserInfo.getId()), HttpStatus.CREATED);
+        return new ResponseEntity<Integer>(newUserInfo.getId(), HttpStatus.CREATED);
 
     }
 
-    @GetMapping("/userProfile")
-    public ResponseEntity<?> getUserProfile(HttpSession session){
-        int id = (Integer)session.getAttribute("id");
+    @GetMapping("/userProfile/{id}")
+    public ResponseEntity<?> getUserProfile(@PathVariable("Id") int id){
         Optional<UserProfile> profile = this.userProfileRepository.findProfileById(id);
         if(profile.isPresent()){
             return new ResponseEntity<UserProfile>(profile.get(), HttpStatus.OK);
@@ -95,12 +95,19 @@ public class UserManagementController  {
         int id = (Integer)session.getAttribute("id");
         Optional<UserProfile> profile = this.userProfileRepository.findProfileById(id);
 
-        // Check if the profile we want to update exists
-        if (profile.isPresent()) {
-            userProfileRepository.updateProfile(userProfile);
-            return new ResponseEntity<>("Updated successfully", HttpStatus.OK);
+        // Check if the profile associate with the id exists
+        if (!profile.isPresent()) {
+            return new ResponseEntity<>("User not found with id: " + userProfile.getId(), HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>("User not found with id: " + userProfile.getId(), HttpStatus.NOT_FOUND);
+        // Check if the new user name already exists
+        if (this.userProfileRepository.findProfileByName(userProfile.getUsername()).isPresent()) {
+            return  new ResponseEntity("User name already exist", HttpStatus.CONFLICT);
+        }
+
+        // Update the corresponding profile with new parameters
+        userProfileRepository.updateProfile(userProfile);
+        return new ResponseEntity<>("Updated successfully", HttpStatus.OK);
+
     }
 }
