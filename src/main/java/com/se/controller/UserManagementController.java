@@ -7,6 +7,7 @@ import com.se.repository.UserInfoRepository;
 import com.se.repository.UserProfileRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -39,10 +40,11 @@ public class UserManagementController  {
     }
 
     // Login using basic authentication.
-    @GetMapping("/login/{username}")
-    public ResponseEntity<String> getUser(@PathVariable("username") String username, HttpSession session){
+    @GetMapping("/login")
+    public ResponseEntity<String> getUser(HttpSession session){
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        Optional<UserInfo> userInfo = userInfoRepository.findInfoByUsername(username);
+        Optional<UserInfo> userInfo = userInfoRepository.findInfoByEmail(email);
         if(userInfo.isPresent()){
             session.setAttribute("id", userInfo.get().getId());
             return new ResponseEntity<String>(String.valueOf(userInfo.get().getId()), HttpStatus.OK);
