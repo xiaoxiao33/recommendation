@@ -1,10 +1,7 @@
 package com.se.repository;
 
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
-@Repository
 public interface ScheduleRepository {
 
     /**
@@ -35,10 +32,10 @@ public interface ScheduleRepository {
 
     /**
      *
-     * @param uid
+     * @param uid userId
      * @param start
      * @param end
-     * @return
+     * @return add a entry to busy slots table with the three fields.
      */
     public boolean addSlot(int uid, String start, String end);
 

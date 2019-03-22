@@ -1,20 +1,21 @@
 package com.se.repository;
 
-import com.se.model.UserInfo;
 import com.se.model.UserProfile;
-import org.apache.catalina.User;
-import org.springframework.stereotype.Service;
-
-import java.util.*;
-
-import org.hibernate.*;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.springframework.stereotype.Repository;
 
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Root;
+import java.util.List;
+import java.util.Optional;
 
-import static java.util.Optional.ofNullable;
-
-@Service
+@Repository
 public class UserProfileRepository {
 
     // Save a new user profile
