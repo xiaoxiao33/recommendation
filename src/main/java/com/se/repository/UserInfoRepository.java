@@ -2,21 +2,25 @@ package com.se.repository;
 
 import com.se.model.UserInfo;
 import com.se.model.UserProfile;
-import com.se.repository.UserProfileRepository;
-
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.criterion.Restrictions;
-import javax.persistence.criteria.*;
-import org.hibernate.*;
-import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Root;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
-@Service
+@Repository
 public class UserInfoRepository {
 
     Map<Integer, UserInfo> userInfoMap = new HashMap<>();
