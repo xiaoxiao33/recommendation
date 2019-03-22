@@ -3,9 +3,6 @@ package com.se.repository;
 import com.se.exception.DataServiceOperationException;
 import com.se.util.InvitationStatus;
 import com.se.vo.InvitationVO;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -45,9 +42,9 @@ public interface InvitationRepository {
 
     /**
      *
-     * @param uid search gor all invitation entries with recieverId or sendId equal to uid
-     * @param startTime search for all invitation entries with start field the same as startTime in database
-     * @return true if all associated invitation entries are updated to REJECTED, false otherwise.
+     * @param uid, search for all invitation entries with recieverId or sendId equal to uid
+     * @param startTime, search for all invitation entries with start field the same as startTime in database
+     * @return return if all associated invitation entries are updated to REJECTED, throw exception otherwise.
      */
     public void setInvitationStatusRejected(int uid, String startTime) throws DataServiceOperationException;
 
@@ -55,7 +52,7 @@ public interface InvitationRepository {
     /**
      *
      * @param invitationId
-     * @return true if invitation status is set to be ACCEPTED successfully, false otherwise.
+     * @return return if invitation status is set to be ACCEPTED successfully, throw exception otherwise.
      */
     public void setInvitationStatusAccepted(int invitationId) throws DataServiceOperationException;
 
