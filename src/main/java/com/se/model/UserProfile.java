@@ -58,4 +58,5 @@ public class UserProfile {
     public int getId() {
         return id;
     }
+
 }
