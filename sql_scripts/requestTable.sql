@@ -1,4 +1,4 @@
-create table mealdate.invitationvo(
+create table mealdate.InvitationTable(
 	id serial primary key,
 	sender integer not null,
 	receiver integer not null,
