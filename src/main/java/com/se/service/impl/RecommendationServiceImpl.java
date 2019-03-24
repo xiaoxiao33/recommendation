@@ -11,9 +11,11 @@ import com.se.util.ConstValue;
 import com.se.vo.IntendVO;
 import com.se.vo.UserBriefVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+@Service
 public class RecommendationServiceImpl implements RecommedationService {
 
     @Autowired
