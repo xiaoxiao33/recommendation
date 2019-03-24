@@ -100,13 +100,15 @@ public class UserManagementController  {
 
     @PostMapping("/updateProfile")
     public ResponseEntity<String> updateUserProfile(@RequestParam("uid") String uid,
-                                                    @RequestParam("gender") int gender,
+                                                    @RequestParam("gender") String genderS,
                                                     @RequestParam("major") String major,
-                                                    @RequestParam("age") int age,
+                                                    @RequestParam("age") String ageS,
                                                     @RequestParam("year") String year,
-                                                    @RequestParam("availability") char availability) {
+                                                    @RequestParam("availability") String availability) {
         //int id = (Integer)session.getAttribute("id");
         int id = Integer.parseInt(uid);
+        int age = Integer.parseInt(ageS);
+        int gender = Integer.parseInt(genderS);
         Optional<UserProfile> profile = this.userProfileRepository.findProfileById(id);
 
         // Check if the profile associate with the id exists
@@ -121,7 +123,7 @@ public class UserManagementController  {
                 .major(major)
                 .age(age)
                 .year(year)
-                .availability(availability)
+                .availability(availability.charAt(0))
                 .build();
         userProfileRepository.updateProfile(userProfile);
         return new ResponseEntity<>("Updated successfully", HttpStatus.OK);

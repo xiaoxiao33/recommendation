@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-@SpringBootApplication(scanBasePackages={"com.se.service","com.se.repository","com.se.config"})
+@SpringBootApplication
 @EnableJpaAuditing
 public class RecommendationApplication {
 	public static void main(String[] args) {
