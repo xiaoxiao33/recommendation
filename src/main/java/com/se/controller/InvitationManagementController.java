@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/invitation")
-@CrossOrigin("http://localhost:8100")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class InvitationManagementController {
 
     private final InvitationRepository invitationRepository;
@@ -34,12 +34,11 @@ public class InvitationManagementController {
     }
 
     /**
-     * @param session
+     * @param id
      * @return  invitation received by the user from others that needs to be processed.
      */
-    @GetMapping("/pending")
-    public ResponseEntity<List<InvitationBriefVO>> getReceivedInvitations(HttpSession session) {
-        int id = (Integer)session.getAttribute("id");
+    @GetMapping("/pending/{id}")
+    public ResponseEntity<List<InvitationBriefVO>> getReceivedInvitations(@PathVariable("id") int id) {
         List<InvitationVO> activeInvites =
                 invitationRepository.getInvitationsByStatus(id, InvitationStatus.ACTIVE);
         List<InvitationBriefVO> pendingInvites = new ArrayList<>();
@@ -52,12 +51,11 @@ public class InvitationManagementController {
     }
 
     /**
-     * @param session
+     * @param id
      * @return  invitations sent out by the user that wait for others' responses
      */
-    @GetMapping("/waiting")
-    public ResponseEntity<List<InvitationBriefVO>> getNonrespInvitations(HttpSession session) {
-        int id = (Integer)session.getAttribute("id");
+    @GetMapping("/waiting/{id}")
+    public ResponseEntity<List<InvitationBriefVO>> getNonrespInvitations(@PathVariable("id") int id) {
         List<InvitationVO> activeInvites =
                 invitationRepository.getInvitationsByStatus(id, InvitationStatus.ACTIVE);
         List<InvitationBriefVO> waitingInvites = new ArrayList<>();
@@ -74,9 +72,8 @@ public class InvitationManagementController {
      * @param session
      * @return upcoming meals that have been confirmed by both the sender and the receiver
      */
-    @GetMapping("/upcoming")
-    public ResponseEntity<List<InvitationBriefVO>> getUpcomingInvitations(HttpSession session) {
-        int id = (Integer)session.getAttribute("id");
+    @GetMapping("/upcoming/{id}")
+    public ResponseEntity<List<InvitationBriefVO>> getUpcomingInvitations(@PathVariable("id") int id) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(PATTERN);
         String date = simpleDateFormat.format(new Date());
 
