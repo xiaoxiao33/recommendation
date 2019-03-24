@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/eatNow")
-@CrossOrigin("http://localhost:8100")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class EatNowController {
 
     @PostMapping("/recommendation")

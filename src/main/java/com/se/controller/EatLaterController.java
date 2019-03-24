@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/eatLater")
-@CrossOrigin("http://localhost:8100")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class EatLaterController {
     @Autowired
     private RecommedationService recommedationService;

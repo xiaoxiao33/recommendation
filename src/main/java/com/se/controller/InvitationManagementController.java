@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/invitation")
-@CrossOrigin("http://localhost:8100")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class InvitationManagementController {
 
     private final InvitationRepository invitationRepository;

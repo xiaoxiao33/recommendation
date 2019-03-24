@@ -102,11 +102,12 @@ public class UserManagementController  {
     public ResponseEntity<String> updateUserProfile(@RequestParam("uid") String uid,
                                                     @RequestParam("gender") String genderS,
                                                     @RequestParam("major") String major,
+                                                    @RequestParam("college") String college,
                                                     @RequestParam("age") String ageS,
                                                     @RequestParam("year") String year,
-                                                    @RequestParam("availability") String availability) {
-        //int id = (Integer)session.getAttribute("id");
-        int id = Integer.parseInt(uid);
+                                                    @RequestParam("availability") String availability, HttpSession session) {
+        int id = (Integer)session.getAttribute("id");
+//        int id = Integer.parseInt(uid);
         int age = Integer.parseInt(ageS);
         int gender = Integer.parseInt(genderS);
         Optional<UserProfile> profile = this.userProfileRepository.findProfileById(id);
@@ -121,6 +122,7 @@ public class UserManagementController  {
                 .id(id)
                 .gender(gender)
                 .major(major)
+                .college(college)
                 .age(age)
                 .year(year)
                 .availability(availability.charAt(0))
