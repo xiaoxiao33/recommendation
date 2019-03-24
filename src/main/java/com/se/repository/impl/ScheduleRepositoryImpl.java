@@ -1,6 +1,7 @@
 package com.se.repository.impl;
 
 import com.se.repository.ScheduleRepository;
+import com.se.vo.IntendVO;
 import com.se.vo.InvitationVO;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
@@ -37,7 +38,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
 
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Integer> query = builder.createQuery(Integer.class);
-            Root<BusyVO> root = query.from(BusyVO.class);
+            Root<IntendVO> root = query.from(IntendVO.class);
 
             // result in the right side
             Predicate andA = builder.and(builder.greaterThan(root.get("startTime"),start), builder.lessThan(root.get("startTime"), end));
@@ -179,12 +180,44 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
         return true;
     }
 
+    /**
+     *
+     * @param uid userId
+     * @param start
+     * @param end
+     * @return add a entry to intend slots table with the three fields.
+     */
+    public boolean addIntendSlot(int uid, String start, String end) {
+        SessionFactory factory = new Configuration().configure().buildSessionFactory();
+
+        Transaction transaction = null;
+        try (Session session = factory.openSession()) {
+            transaction = session.beginTransaction();
+
+            IntendVO intendVO = IntendVO.builder().userId(uid).startTime(start).endTime(end).build();
+            session.save(intendVO);
+            transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        }
+        return true;
+    }
+
     public static void main(String[] args){
         System.out.println("Scheduler test");
         ScheduleRepositoryImpl srImpl = new ScheduleRepositoryImpl();
 
         // test addSlot
-        srImpl.addSlot(3,"20190325-01", "20190325-06");
+        // srImpl.addSlot(3,"20190325-01", "20190325-06");
+
+        // test addIntendSlot
+        srImpl.addIntendSlot(1,"20190304-01", "20190304-06");
+        srImpl.addIntendSlot(1,"20190327-01", "20190327-06");
+        srImpl.addIntendSlot(2,"20190326-01", "20190326-06");
+        srImpl.addIntendSlot(3,"20190325-01", "20190325-06");
 
         // test deleteExpiredBusySlots
         srImpl.deleteExpiredBusySlots("20190302-07");

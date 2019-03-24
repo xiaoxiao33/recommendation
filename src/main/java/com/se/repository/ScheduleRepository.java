@@ -39,4 +39,12 @@ public interface ScheduleRepository {
      */
     public boolean addSlot(int uid, String start, String end);
 
+    /**
+     *
+     * @param uid userId
+     * @param start
+     * @param end
+     * @return add a entry to intend slots table with the three fields.
+     */
+    public boolean addIntendSlot(int uid, String start, String end);
 }
