@@ -4,8 +4,8 @@ import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
 
 @Builder(toBuilder = true)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
@@ -13,7 +13,7 @@ import javax.persistence.Id;
 @Setter
 @Getter
 @Entity
-public class IntendVO {
+public class BusyVO {
     @Id
     @GeneratedValue(generator="increment")
     @Column(name = "id")
@@ -27,5 +27,4 @@ public class IntendVO {
 
     @Column(name = "end_time")
     String endTime;
-
 }

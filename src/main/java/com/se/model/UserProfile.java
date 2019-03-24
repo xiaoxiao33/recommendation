@@ -52,6 +52,9 @@ public class UserProfile {
     @Column(name = "availability")
     private char availability;
 
+    @Column(name = "college")
+    private String college;
+  
     public int getId() {
         return id;
     }
