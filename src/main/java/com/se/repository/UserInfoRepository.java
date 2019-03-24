@@ -23,7 +23,6 @@ import java.util.Optional;
 
 @Repository
 public class UserInfoRepository {
-    
     // Save a user's info
     public UserInfo saveInfo(UserInfo user) {
         SessionFactory factory = new Configuration().configure().buildSessionFactory();
