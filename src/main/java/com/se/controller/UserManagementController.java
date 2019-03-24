@@ -104,7 +104,8 @@ public class UserManagementController  {
                                                     @RequestParam("major") String major,
                                                     @RequestParam("age") String ageS,
                                                     @RequestParam("year") String year,
-                                                    @RequestParam("availability") String availability) {
+                                                    @RequestParam("availability") String availability,
+                                                    @RequestParam("college") String college) {
         //int id = (Integer)session.getAttribute("id");
         int id = Integer.parseInt(uid);
         int age = Integer.parseInt(ageS);
@@ -124,6 +125,7 @@ public class UserManagementController  {
                 .age(age)
                 .year(year)
                 .availability(availability.charAt(0))
+                .college(college)
                 .build();
         userProfileRepository.updateProfile(userProfile);
         return new ResponseEntity<>("Updated successfully", HttpStatus.OK);
