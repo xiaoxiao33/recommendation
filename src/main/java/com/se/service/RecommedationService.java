@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+
 public interface RecommedationService {
     // match by intend slots
     // match by not busy slots

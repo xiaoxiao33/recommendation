@@ -4,7 +4,9 @@ import com.se.repository.InvitationRepository;
 import com.se.service.InvitationService;
 import com.se.vo.InvitationVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class InvitationServiceImpl implements InvitationService {
     @Autowired
     private InvitationRepository invitationRepository;
