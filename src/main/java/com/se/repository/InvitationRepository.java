@@ -34,7 +34,7 @@ public interface InvitationRepository {
      *
      * @param uid senderId or receiverId
      * @param currentTime For each day, time is divided into 1 hour granularity, from 0 to 23. Input is of the format
-     *                    "20190103-2", meaning 2019 Jan 3rd, 2:00.
+     *                    "2019-01-03-02-30", meaning 2019 Jan 3rd, 2:00.
      * @return a list of accepted invitations with start time >= the currentTime.
      */
     public List<InvitationVO> getAcceptedInvitationsByTime(int uid, String currentTime);

@@ -26,7 +26,7 @@ public class InvitationManagementController {
     private final InvitationRepository invitationRepository;
     private final ScheduleRepository scheduleRepository;
 
-    private final static String PATTERN = "yyyy-MM-dd-HH";
+    private final static String PATTERN = "yyyy-MM-dd-HH-MM";
 
     public InvitationManagementController(InvitationRepository invitationRepository, ScheduleRepository scheduleRepository) {
         this.invitationRepository = invitationRepository;
