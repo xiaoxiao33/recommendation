@@ -8,7 +8,9 @@ public class InvitationBriefVO {
     int invitationId;
     int senderId;
     int receiverId;
-    String address;  // Change to longitude and altitude later to display on google map
+    //String address;  // Change to longitude and altitude later to display on google map
+    double latitude;
+    double longitude;
     String start;
     String end;
 
@@ -16,7 +18,9 @@ public class InvitationBriefVO {
         this.invitationId = invitationVO.getInvitationId();
         this.senderId = invitationVO.getSenderId();
         this.receiverId = invitationVO.getReceiverId();
-        this.address = invitationVO.getAddress();
+        //this.address = invitationVO.getAddress();
+        this.latitude = invitationVO.getLatitude();
+        this.longitude = invitationVO.getLongitude();
         this.start = invitationVO.getStart();
         this.end = invitationVO.getEnd();
     }

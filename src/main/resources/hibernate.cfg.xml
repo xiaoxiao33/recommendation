@@ -50,6 +50,7 @@
         <!-- <mapping resource="com/hik/gss/sys/domain/User.hbm.xml" />-->
         <mapping class="com.se.model.UserInfo" />
         <mapping class="com.se.model.UserProfile" />
+        <mapping class="com.se.vo.InvitationVO" />
 
     </session-factory>
 

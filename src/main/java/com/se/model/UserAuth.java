@@ -9,9 +9,9 @@ import java.util.Collections;
 
 public class UserAuth implements UserDetails{
 
-    private UserInfo user;
+    private com.se.model.UserInfo user;
 
-    public UserAuth(UserInfo user){
+    public UserAuth(com.se.model.UserInfo user){
         super();
         this.user = user;
     }
