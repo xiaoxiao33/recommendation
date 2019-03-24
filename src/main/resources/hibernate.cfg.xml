@@ -13,7 +13,7 @@
         </property>
         <property name="hibernate.default_schema">mealdate</property>
         <property name="connection.username">postgres</property>
-        <property name="connection.password">123456</property>
+        <property name="connection.password">NeVeRgIvEuP13</property>
         <!-- JDBC connection pool (use the built-in) -->
         <!-- <property name="connection.pool_size">1</property> -->
         <property name="c3p0.driver_class">org.postgresql.Driver</property>
@@ -50,6 +50,7 @@
         <!-- <mapping resource="com/hik/gss/sys/domain/User.hbm.xml" />-->
         <mapping class="com.se.model.UserInfo" />
         <mapping class="com.se.model.UserProfile" />
+        <mapping class="com.se.vo.InvitationVO" />
 
     </session-factory>
 
