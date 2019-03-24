@@ -25,7 +25,7 @@ public class UserInfoRepository {
 
     Map<Integer, UserInfo> userInfoMap = new HashMap<>();
 
-    @Autowired
+//    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     // Save a user's info
