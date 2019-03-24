@@ -2,6 +2,7 @@ package com.se.repository;
 
 import com.se.model.UserInfo;
 import com.se.model.UserProfile;
+import com.se.service.PasswordSecurityService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -23,11 +24,6 @@ import java.util.Optional;
 @Repository
 public class UserInfoRepository {
 
-    Map<Integer, UserInfo> userInfoMap = new HashMap<>();
-
-//    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-
     // Save a user's info
     public UserInfo saveInfo(UserInfo user) {
         SessionFactory factory = new Configuration().configure().buildSessionFactory();
@@ -36,8 +32,7 @@ public class UserInfoRepository {
         try (Session session = factory.openSession()) {
             transaction = session.beginTransaction();
 
-            bCryptPasswordEncoder = new BCryptPasswordEncoder();
-            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            user.setPassword(PasswordSecurityService.hashPassword(user.getPassword()));
 
             session.save(user);
 
@@ -212,14 +207,14 @@ public class UserInfoRepository {
     }
 
     public static void main(String[] args){
-        /*System.out.println("print user info");
+        System.out.println("print user info");
         UserInfoRepository u = new UserInfoRepository();
-        UserInfo user = UserInfo.builder().username("haha").password("woshidalao").email("haha@yale.edu").build();
+        UserInfo user = UserInfo.builder().username("hah").password("woshidalao").email("haa@yale.edu").build();
         u.saveInfo(user);
-        user = UserInfo.builder().username("lala").password("wobushidalao").email("fase@yale.edu").build();
+        user = UserInfo.builder().username("laa").password("wobushidalao").email("fse@yale.edu").build();
         u.saveInfo(user);
         Optional<UserInfo> opt = u.findInfoByUsername("lala");
-        u.findAllInfo();*/
+        u.findAllInfo();
     }
 
 }

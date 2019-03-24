@@ -11,6 +11,7 @@ create table mealdate.userProfile(
 	major varchar(30),
 	u_age integer,
 	u_year varchar(30),
+	college varchar(20),
 	availability char,
 	foreign key (u_id) references mealdate.userInfo(u_id)
 );
