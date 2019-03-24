@@ -212,14 +212,14 @@ public class UserInfoRepository {
     }
 
     public static void main(String[] args){
-        /*System.out.println("print user info");
+        System.out.println("print user info");
         UserInfoRepository u = new UserInfoRepository();
-        UserInfo user = UserInfo.builder().username("haha").password("woshidalao").email("haha@yale.edu").build();
+        UserInfo user = UserInfo.builder().username("hah").password("woshidalao").email("haa@yale.edu").build();
         u.saveInfo(user);
-        user = UserInfo.builder().username("lala").password("wobushidalao").email("fase@yale.edu").build();
+        user = UserInfo.builder().username("laa").password("wobushidalao").email("fse@yale.edu").build();
         u.saveInfo(user);
         Optional<UserInfo> opt = u.findInfoByUsername("lala");
-        u.findAllInfo();*/
+        u.findAllInfo();
     }
 
 }

@@ -21,7 +21,6 @@ import javax.persistence.EnumType;
 @Getter
 @Entity
 public class InvitationVO {
-
     @Id
     @GeneratedValue(generator="increment")
     @Column(name = "id")

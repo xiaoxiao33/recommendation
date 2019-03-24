@@ -3,6 +3,7 @@ package com.se.repository.impl;
 import com.se.exception.DataServiceOperationException;
 import com.se.repository.InvitationRepository;
 import com.se.util.InvitationStatus;
+import com.se.vo.BusyVO;
 import com.se.vo.InvitationVO;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -254,8 +255,9 @@ public class InvitationRepositoryImpl implements InvitationRepository {
     }
 
     public static void main(String[] args){
-        /*System.out.println("******Invitation test******");
+        System.out.println("******Invitation test******");
         InvitationRepositoryImpl impl = new InvitationRepositoryImpl();
-        impl.setInvitationStatusRejected(1, "20190401-24");*/
+        InvitationVO ivo = InvitationVO.builder().invitationId(4).senderId(1).receiverId(2).start("a").end("b").latitude(1.0).longitude(1.0).status(com.se.util.InvitationStatus.ACCEPTED).build();
+        impl.addInvitation(ivo);
     }
 }
