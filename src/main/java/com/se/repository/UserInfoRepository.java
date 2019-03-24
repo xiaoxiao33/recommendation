@@ -2,6 +2,7 @@ package com.se.repository;
 
 import com.se.model.UserInfo;
 import com.se.model.UserProfile;
+import com.se.service.PasswordSecurityService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -22,12 +23,7 @@ import java.util.Optional;
 
 @Repository
 public class UserInfoRepository {
-
-    Map<Integer, UserInfo> userInfoMap = new HashMap<>();
-
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-
+    
     // Save a user's info
     public UserInfo saveInfo(UserInfo user) {
         SessionFactory factory = new Configuration().configure().buildSessionFactory();
@@ -36,8 +32,7 @@ public class UserInfoRepository {
         try (Session session = factory.openSession()) {
             transaction = session.beginTransaction();
 
-            bCryptPasswordEncoder = new BCryptPasswordEncoder();
-            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            user.setPassword(PasswordSecurityService.hashPassword(user.getPassword()));
 
             session.save(user);
 

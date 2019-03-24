@@ -5,9 +5,13 @@ import com.se.model.UserInfo;
 import com.se.model.UserProfile;
 import com.se.repository.UserInfoRepository;
 import com.se.repository.UserProfileRepository;
+import com.se.service.PasswordSecurityService;
+import org.hibernate.validator.constraints.pl.REGON;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -39,18 +43,20 @@ public class UserManagementController  {
         return this.userInfoRepository.findAllInfo();
     }
 
-    // Login using basic authentication.
-    @GetMapping("/login")
-    public ResponseEntity<String> getUser(HttpSession session){
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
+    @PostMapping("/login")
+    public ResponseEntity<String> getUser( @RequestParam("email") String email,
+                                           @RequestParam("password") String password,
+                                           HttpSession session){
         Optional<UserInfo> userInfo = userInfoRepository.findInfoByEmail(email);
         if(userInfo.isPresent()){
-            session.setAttribute("id", userInfo.get().getId());
-            return new ResponseEntity<String>(String.valueOf(userInfo.get().getId()), HttpStatus.OK);
+            if (PasswordSecurityService.checkPass(password, userInfo.get().getPassword())) {
+                session.setAttribute("id", userInfo.get().getId());
+                return new ResponseEntity<String>(String.valueOf(userInfo.get().getId()), HttpStatus.OK);
+            }
         }
 
-        return new ResponseEntity<>("User not found with id: " + userInfo.get().getId(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Wrong email or password" , HttpStatus.UNAUTHORIZED);
     }
 
 
@@ -93,16 +99,30 @@ public class UserManagementController  {
     }
 
     @PostMapping("/updateProfile")
-    public ResponseEntity<String> updateUserProfile(@RequestBody UserProfile userProfile, HttpSession session) {
-        int id = (Integer)session.getAttribute("id");
+    public ResponseEntity<String> updateUserProfile(@RequestParam("uid") String uid,
+                                                    @RequestParam("gender") int gender,
+                                                    @RequestParam("major") String major,
+                                                    @RequestParam("age") int age,
+                                                    @RequestParam("year") String year,
+                                                    @RequestParam("availability") char availability) {
+        //int id = (Integer)session.getAttribute("id");
+        int id = Integer.parseInt(uid);
         Optional<UserProfile> profile = this.userProfileRepository.findProfileById(id);
 
         // Check if the profile associate with the id exists
         if (!profile.isPresent()) {
-            return new ResponseEntity<>("User not found with id: " + userProfile.getId(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("User not found with id: " + id, HttpStatus.NOT_FOUND);
         }
 
         // Update the corresponding profile with new parameters
+        UserProfile userProfile = UserProfile.builder()
+                .id(id)
+                .gender(gender)
+                .major(major)
+                .age(age)
+                .year(year)
+                .availability(availability)
+                .build();
         userProfileRepository.updateProfile(userProfile);
         return new ResponseEntity<>("Updated successfully", HttpStatus.OK);
 
