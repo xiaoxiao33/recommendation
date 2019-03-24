@@ -27,4 +27,5 @@ public class IntendVO {
 
     @Column(name = "end_time")
     String endTime;
+
 }
