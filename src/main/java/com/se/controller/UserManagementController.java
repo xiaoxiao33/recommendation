@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin("http://localhost:8100")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserManagementController  {
 
     private final UserProfileRepository userProfileRepository;
@@ -97,7 +97,7 @@ public class UserManagementController  {
         }
         return new ResponseEntity<>("User not found with id: " + id, HttpStatus.NOT_FOUND);
     }
-
+   
     @PostMapping("/updateProfile")
     public ResponseEntity<String> updateUserProfile(@RequestParam("uid") String uid,
                                                     @RequestParam("gender") String genderS,
@@ -129,4 +129,5 @@ public class UserManagementController  {
         return new ResponseEntity<>("Updated successfully", HttpStatus.OK);
 
     }
+
 }
