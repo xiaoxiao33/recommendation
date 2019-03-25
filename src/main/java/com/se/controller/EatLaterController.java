@@ -45,6 +45,7 @@ public class EatLaterController {
     @PostMapping("/sendInvitation")
     public ResponseEntity<String> sendInvitation(@RequestBody InvitationVO invitationVO, HttpSession session) {
         int uid = (int)session.getAttribute("id");
+        System.out.println(uid + ":" + invitationVO.getSenderId() + "," + invitationVO.getReceiverId());
         if (uid != invitationVO.getSenderId()) {
             return new ResponseEntity<>("Warning: sender id not match", HttpStatus.OK);
         }

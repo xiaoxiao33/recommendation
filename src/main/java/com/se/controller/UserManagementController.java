@@ -107,6 +107,7 @@ public class UserManagementController  {
                                                     @RequestParam("year") String year,
                                                     @RequestParam("availability") String availability, HttpSession session) {
         int id = (Integer)session.getAttribute("id");
+        System.out.println("session id: " + id);
 //        int id = Integer.parseInt(uid);
         int age = Integer.parseInt(ageS);
         int gender = Integer.parseInt(genderS);

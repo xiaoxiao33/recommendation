@@ -1,5 +1,6 @@
 package com.se.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.se.exception.DataServiceOperationException;
 import com.se.repository.InvitationRepository;
 import com.se.repository.ScheduleRepository;
@@ -38,7 +39,7 @@ public class InvitationManagementController {
      * @return  invitation received by the user from others that needs to be processed.
      */
     @GetMapping("/pending/{id}")
-    public ResponseEntity<List<InvitationBriefVO>> getReceivedInvitations(@PathVariable("id") int id) {
+    public ResponseEntity<String> getReceivedInvitations(@PathVariable("id") int id) {
         List<InvitationVO> activeInvites =
                 invitationRepository.getInvitationsByStatus(id, InvitationStatus.ACTIVE);
         List<InvitationBriefVO> pendingInvites = new ArrayList<>();
@@ -47,7 +48,9 @@ public class InvitationManagementController {
                 pendingInvites.add(new InvitationBriefVO(invitationVo));
             }
         }
-        return new ResponseEntity<>(pendingInvites, HttpStatus.OK);
+        String res = JSON.toJSONString(pendingInvites);
+        System.out.println(res);
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     /**
@@ -57,6 +60,7 @@ public class InvitationManagementController {
     @GetMapping("/waiting/{id}")
     public ResponseEntity<List<InvitationBriefVO>> getNonrespInvitations(@PathVariable("id") int id) {
         List<InvitationVO> activeInvites =
+
                 invitationRepository.getInvitationsByStatus(id, InvitationStatus.ACTIVE);
         List<InvitationBriefVO> waitingInvites = new ArrayList<>();
         for (InvitationVO invitationVo : activeInvites) {
@@ -69,7 +73,7 @@ public class InvitationManagementController {
     }
 
     /**
-     * @param session
+     * @param //session
      * @return upcoming meals that have been confirmed by both the sender and the receiver
      */
     @GetMapping("/upcoming/{id}")

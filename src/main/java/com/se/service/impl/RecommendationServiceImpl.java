@@ -11,9 +11,11 @@ import com.se.util.ConstValue;
 import com.se.vo.IntendVO;
 import com.se.vo.UserBriefVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+@Service
 public class RecommendationServiceImpl implements RecommedationService {
 
     @Autowired
@@ -38,6 +40,7 @@ public class RecommendationServiceImpl implements RecommedationService {
         /* match by slots */
         List<Integer> intendMatchList = scheduleRepository.findByMatchedSlot(uid, intendVO.getStartTime(), intendVO.getEndTime());
         List<Integer> busyMatchList = scheduleRepository.findByNonConlictSlot(uid, intendVO.getStartTime(), intendVO.getEndTime());
+        // TODO:
         // deduplicate
         Set<Integer> set = new HashSet<>();
         List<Integer> mergedList = new ArrayList<>();
@@ -49,7 +52,7 @@ public class RecommendationServiceImpl implements RecommedationService {
         }
 
         /* filter by other info ...*/
-        //TODO
+        // TODO
 
         //add res
         int counter = 0;
