@@ -13,5 +13,4 @@ public interface RecommedationService {
     public List<UserBriefVO> getRecommendation(IntendVO intendVO, int uid);
 
 
-
 }

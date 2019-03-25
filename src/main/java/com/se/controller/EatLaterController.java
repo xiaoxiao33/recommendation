@@ -25,26 +25,24 @@ public class EatLaterController {
 
     /**
      *
-     * @param session
+     * @param // session
      * @param intendInfo    All info submitted in the eat later homepage, one for a slot only
      * @return
      */
     @PostMapping("/recommendation")
-    public ResponseEntity<List<UserBriefVO>> getRecommendationList(@RequestBody IntendVO intendInfo, HttpSession session) {
-        int uid = (int) session.getAttribute("id");
+    public ResponseEntity<List<UserBriefVO>> getRecommendationList(@RequestBody IntendVO intendInfo, @RequestParam("uid") int uid) {
         List<UserBriefVO> list = recommedationService.getRecommendation(intendInfo, uid);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     /**
      *
-     * @param session
+     * @param // session
      * @param invitationVO required params: senderId, receiverId, address, start, end
      * @return
      */
     @PostMapping("/sendInvitation")
-    public ResponseEntity<String> sendInvitation(@RequestBody InvitationVO invitationVO, HttpSession session) {
-        int uid = (int)session.getAttribute("id");
+    public ResponseEntity<String> sendInvitation(@RequestBody InvitationVO invitationVO, @RequestParam("uid") int uid) {
         System.out.println(uid + ":" + invitationVO.getSenderId() + "," + invitationVO.getReceiverId());
         if (uid != invitationVO.getSenderId()) {
             return new ResponseEntity<>("Warning: sender id not match", HttpStatus.OK);
