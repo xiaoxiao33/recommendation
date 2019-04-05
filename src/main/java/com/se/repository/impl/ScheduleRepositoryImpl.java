@@ -174,10 +174,6 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
             session.save(entity);
             transaction.commit();
         } catch (Exception e) {
-
-
-
-
             e.printStackTrace();
             if (transaction != null) {
                 transaction.rollback();

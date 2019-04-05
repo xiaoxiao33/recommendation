@@ -25,7 +25,7 @@ public class UserLocation {
     private double latitude;
 
     @Column(name = "longitude")
-    private String longitude;
+    private double longitude;
 
     @Column(name = "update_time")
     private String update_time;

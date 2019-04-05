@@ -53,6 +53,7 @@
         <mapping class="com.se.Model.Invitation" />
         <mapping class="com.se.Model.IntendSlot" />
         <mapping class="com.se.Model.BusySlot" />
+        <mapping class="com.se.Model.UserLocation" />
 
     </session-factory>
 
