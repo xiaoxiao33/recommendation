@@ -51,6 +51,7 @@
         <mapping class="com.se.model.UserInfo" />
         <mapping class="com.se.model.UserProfile" />
         <mapping class="com.se.vo.InvitationVO" />
+        <mapping class="com.se.model.UserLocation" />
 
     </session-factory>
 
