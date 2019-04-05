@@ -5,23 +5,23 @@ package com.se.vo;
  */
 
 public class InvitationBriefVO {
-    int invitationId;
-    int senderId;
-    int receiverId;
+    public int invitationId;
+    public int senderId;
+    public int receiverId;
     //String address;  // Change to longitude and altitude later to display on google map
-    double latitude;
-    double longitude;
-    String start;
-    String end;
+    public double latitude;
+    public double longitude;
+    public String start;
+    public String end;
 
     public InvitationBriefVO(InvitationVO invitationVO) {
-        this.invitationId = invitationVO.getInvitationId();
-        this.senderId = invitationVO.getSenderId();
-        this.receiverId = invitationVO.getReceiverId();
+        this.invitationId = invitationVO.invitationId;
+        this.senderId = invitationVO.senderId;
+        this.receiverId = invitationVO.receiverId;
         //this.address = invitationVO.getAddress();
-        this.latitude = invitationVO.getLatitude();
-        this.longitude = invitationVO.getLongitude();
-        this.start = invitationVO.getStart();
-        this.end = invitationVO.getEnd();
+        this.latitude = invitationVO.latitude;
+        this.longitude = invitationVO.longitude;
+        this.start = invitationVO.start;
+        this.end = invitationVO.end;
     }
 }

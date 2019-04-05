@@ -44,12 +44,15 @@ public class InvitationManagementController {
                 invitationRepository.getInvitationsByStatus(id, InvitationStatus.ACTIVE);
         List<InvitationBriefVO> pendingInvites = new ArrayList<>();
         for (InvitationVO invitationVo : activeInvites) {
-            if (invitationVo.getReceiverId() == id) {
+//            System.out.println("id:" + id + " receiverId:" + invitationVo.getReceiverId());
+            if (invitationVo.receiverId == id) {
                 pendingInvites.add(new InvitationBriefVO(invitationVo));
             }
         }
+        System.out.println(pendingInvites.size());
+//        System.out.println(pendingInvites.get(0));
         String res = JSON.toJSONString(pendingInvites);
-        System.out.println(res);
+//        System.out.println(res);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
@@ -64,7 +67,7 @@ public class InvitationManagementController {
                 invitationRepository.getInvitationsByStatus(id, InvitationStatus.ACTIVE);
         List<InvitationBriefVO> waitingInvites = new ArrayList<>();
         for (InvitationVO invitationVo : activeInvites) {
-            if (invitationVo.getSenderId() == id) {
+            if (invitationVo.senderId == id) {
                 waitingInvites.add(new InvitationBriefVO(invitationVo));
             }
         }
@@ -102,10 +105,10 @@ public class InvitationManagementController {
 
         if (status == InvitationStatus.ACTIVE) {
             InvitationVO currentInvite = invitationRepository.getInvitationById(invitationId);
-            int receiverId = currentInvite.getReceiverId();
-            int senderId = currentInvite.getSenderId();
-            String startTime = currentInvite.getStart();
-            String endTime = currentInvite.getEnd();
+            int receiverId = currentInvite.receiverId;
+            int senderId = currentInvite.senderId;
+            String startTime = currentInvite.start;
+            String endTime = currentInvite.end;
 
             try {
                 invitationRepository.setInvitationStatusAccepted(invitationId);
