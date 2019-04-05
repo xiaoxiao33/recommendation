@@ -36,10 +36,12 @@ public class RecommendationServiceImpl implements RecommedationService {
 
     @Override
     public List<UserBriefVO> getRecommendation(IntendVO intendVO, int uid) {
+        /* add current intend slot to intendTable */
+        scheduleRepository.addIntendSlot(uid, intendVO.startTime, intendVO.endTime);
         List<UserBriefVO> res = new ArrayList<>();
         /* match by slots */
-        List<Integer> intendMatchList = scheduleRepository.findByMatchedSlot(uid, intendVO.getStartTime(), intendVO.getEndTime());
-        List<Integer> busyMatchList = scheduleRepository.findByNonConlictSlot(uid, intendVO.getStartTime(), intendVO.getEndTime());
+        List<Integer> intendMatchList = scheduleRepository.findByMatchedSlot(uid, intendVO.startTime, intendVO.endTime);
+        List<Integer> busyMatchList = scheduleRepository.findByNonConlictSlot(uid, intendVO.startTime, intendVO.endTime);
         // TODO:
         // deduplicate
         Set<Integer> set = new HashSet<>();

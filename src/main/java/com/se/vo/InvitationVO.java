@@ -2,14 +2,6 @@ package com.se.vo;
 
 import com.se.Model.Invitation;
 import com.se.util.InvitationStatus;
-import lombok.*;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Enumerated;
-import javax.persistence.EnumType;
 
 /**
  * This class represents an invitation object stored in database

@@ -1,5 +1,6 @@
 package com.se.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.se.service.InvitationService;
 import com.se.service.RecommedationService;
 import com.se.vo.IntendVO;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -30,8 +32,11 @@ public class EatLaterController {
      * @return
      */
     @PostMapping("/recommendation")
-    public ResponseEntity<List<UserBriefVO>> getRecommendationList(@RequestBody IntendVO intendInfo, @RequestParam("uid") int uid) {
-        List<UserBriefVO> list = recommedationService.getRecommendation(intendInfo, uid);
+    @ResponseBody
+    public ResponseEntity<List<UserBriefVO>> getRecommendationList(@RequestBody IntendVO intendInfo) {
+        System.out.println("IntendVO: "+JSON.toJSONString(intendInfo));
+        List<UserBriefVO> list = recommedationService.getRecommendation(intendInfo, intendInfo.userId);
+//        List<UserBriefVO> list = new ArrayList<>();
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
@@ -42,6 +47,7 @@ public class EatLaterController {
      * @return
      */
     @PostMapping("/sendInvitation")
+    @ResponseBody
     public ResponseEntity<String> sendInvitation(@RequestBody InvitationVO invitationVO) {
 //        System.out.println(uid + ":" + invitationVO.getSenderId() + "," + invitationVO.getReceiverId());
 //        if (uid != invitationVO.getSenderId()) {
