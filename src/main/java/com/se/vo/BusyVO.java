@@ -17,14 +17,14 @@ public class BusyVO {
     @Id
     @GeneratedValue(generator="increment")
     @Column(name = "id")
-    int recordId;
+    public int recordId;
 
     @Column(name = "u_id")
-    int userId;
+    public int userId;
 
     @Column(name = "start_time")
-    String startTime;
+    public  String startTime;
 
     @Column(name = "end_time")
-    String endTime;
+   public  String endTime;
 }

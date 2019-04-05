@@ -39,7 +39,7 @@ public class InvitationManagementController {
      * @return  invitation received by the user from others that needs to be processed.
      */
     @GetMapping("/pending/{id}")
-    public ResponseEntity<String> getReceivedInvitations(@PathVariable("id") int id) {
+    public ResponseEntity<List<InvitationBriefVO>> getReceivedInvitations(@PathVariable("id") int id) {
         List<InvitationVO> activeInvites =
                 invitationRepository.getInvitationsByStatus(id, InvitationStatus.ACTIVE);
         List<InvitationBriefVO> pendingInvites = new ArrayList<>();
@@ -49,11 +49,7 @@ public class InvitationManagementController {
                 pendingInvites.add(new InvitationBriefVO(invitationVo));
             }
         }
-        System.out.println(pendingInvites.size());
-//        System.out.println(pendingInvites.get(0));
-        String res = JSON.toJSONString(pendingInvites);
-//        System.out.println(res);
-        return new ResponseEntity<>(res, HttpStatus.OK);
+        return new ResponseEntity<>(pendingInvites, HttpStatus.OK);
     }
 
     /**
@@ -113,7 +109,6 @@ public class InvitationManagementController {
             try {
                 invitationRepository.setInvitationStatusAccepted(invitationId);
                 invitationRepository.setInvitationStatusRejected(receiverId, startTime);
-                invitationRepository.setInvitationStatusRejected(senderId, startTime);
                 scheduleRepository.addSlot(receiverId, startTime, endTime);
                 scheduleRepository.addSlot(senderId, startTime, endTime);
             } catch (DataServiceOperationException ex) {

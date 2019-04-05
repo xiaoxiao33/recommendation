@@ -162,7 +162,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
      * @return add a entry to busy slots table with the three fields.
      */
     public boolean addSlot(int uid, String start, String end) {
-        SessionFactory factory = new Configuration().configure().buildSessionFactory();
+        SessionFactory factory = new Configuration().configure().addAnnotatedClass(BusyVO.class).buildSessionFactory();
 
         Transaction transaction = null;
         try (Session session = factory.openSession()) {
@@ -172,6 +172,10 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
             session.save(busyVO);
             transaction.commit();
         } catch (Exception e) {
+
+
+
+
             e.printStackTrace();
             if (transaction != null) {
                 transaction.rollback();

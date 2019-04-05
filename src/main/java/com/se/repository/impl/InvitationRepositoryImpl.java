@@ -176,7 +176,7 @@ public class InvitationRepositoryImpl implements InvitationRepository {
     /**
      *
      * @param uid search for all invitation entries with receiverId or sendId equal to uid
-     * @param startTime search for all invitation entries with start field the same as startTime in database
+     * @param startTime search for all active invitation entries with start field the same as startTime in database
      * @return return if all associated invitation entries are updated to REJECTED, throw exception otherwise.
      */
     public void setInvitationStatusRejected(int uid, String startTime) throws DataServiceOperationException {
@@ -192,7 +192,7 @@ public class InvitationRepositoryImpl implements InvitationRepository {
 
             update.set("status", InvitationStatus.REJECTED);
             Predicate orClause = builder.or(builder.equal(root.get("senderId"), uid), builder.equal(root.get("receiverId"),uid));
-            update.where(builder.equal(root.get("start"), startTime), orClause);
+            update.where(builder.equal(root.get("start"), startTime), orClause, builder.equal(root.get("status"), InvitationStatus.ACTIVE));
 
             session.createQuery(update).executeUpdate();
 
