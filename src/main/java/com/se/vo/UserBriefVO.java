@@ -9,4 +9,6 @@ public class UserBriefVO {
     public int gender;
     public String major;
     public String college;
+    public double distance;
+    public int uid;
 }
