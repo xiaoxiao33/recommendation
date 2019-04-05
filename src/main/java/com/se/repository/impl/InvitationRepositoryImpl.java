@@ -1,5 +1,7 @@
 package com.se.repository.impl;
-
+import com.se.Model.Invitation;
+import com.alibaba.fastjson.JSON;
+import com.se.Model.Invitation;
 import com.se.exception.DataServiceOperationException;
 import com.se.repository.InvitationRepository;
 import com.se.util.InvitationStatus;
@@ -14,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +34,18 @@ public class InvitationRepositoryImpl implements InvitationRepository {
         Transaction transaction = null;
         try (Session session = factory.openSession()) {
             transaction = session.beginTransaction();
-            session.save(invitation);
+            /*InvitationVO to Invitation entity*/
+            Invitation entity = Invitation.builder()
+                    .senderId(invitation.senderId)
+                    .receiverId(invitation.receiverId)
+                    .start(invitation.start)
+                    .end(invitation.end)
+                    .latitude(invitation.latitude)
+                    .longitude(invitation.longitude)
+                    .status(invitation.status)
+                    .build();
+            /*end convert*/
+            session.save(entity);
             transaction.commit();
             return true;
 
@@ -59,14 +73,15 @@ public class InvitationRepositoryImpl implements InvitationRepository {
             transaction = session.beginTransaction();
 
             CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<com.se.vo.InvitationVO> query = builder.createQuery(com.se.vo.InvitationVO.class);
-            Root<com.se.vo.InvitationVO> root = query.from(com.se.vo.InvitationVO.class);
+            CriteriaQuery<Invitation> query = builder.createQuery(com.se.Model.Invitation.class);
+            Root<Invitation> root = query.from(com.se.Model.Invitation.class);
             query.select(root).where(builder.equal(root.get("invitationId"), invitationId));
-            Query<com.se.vo.InvitationVO> q = session.createQuery(query);
+            Query<Invitation> q = session.createQuery(query);
             //avoid exception, set max results as 1
-            List<com.se.vo.InvitationVO> result = q.getResultList();
+            List<Invitation> result = q.getResultList();
             if (!result.isEmpty()) {
-                 invitation = result.get(0);
+                 Invitation entity = result.get(0);
+                 invitation = new InvitationVO(entity);
             }
             transaction.commit();
 
@@ -86,23 +101,26 @@ public class InvitationRepositoryImpl implements InvitationRepository {
      */
     public List<InvitationVO> getInvitationsByStatus(int uid, InvitationStatus status) {
         SessionFactory factory = new Configuration().configure().buildSessionFactory();
-        List<com.se.vo.InvitationVO> result = null;
+        List<com.se.vo.InvitationVO> result = new ArrayList<>();
 
         Transaction transaction = null;
         try (Session session = factory.openSession()) {
             transaction = session.beginTransaction();
 
             CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<com.se.vo.InvitationVO> query = builder.createQuery(com.se.vo.InvitationVO.class);
-            Root<com.se.vo.InvitationVO> root = query.from(com.se.vo.InvitationVO.class);
+            CriteriaQuery<Invitation> query = builder.createQuery(Invitation.class);
+            Root<Invitation> root = query.from(Invitation.class);
 
             Predicate orClause = builder.or(builder.equal(root.get("senderId"), uid), builder.equal(root.get("receiverId"),uid));
             query.select(root).where(builder.equal(root.get("status"), status), orClause);
 
-            Query<com.se.vo.InvitationVO> q = session.createQuery(query);
+            Query<Invitation> q = session.createQuery(query);
 
-            result = q.getResultList();
-
+            List<Invitation> res = q.getResultList();
+//            System.out.println("res size: " + res.size());
+            for (Invitation entity: res) {
+                result.add(new InvitationVO(entity));
+            }
             transaction.commit();
 
         } catch (Exception e) {
@@ -111,6 +129,7 @@ public class InvitationRepositoryImpl implements InvitationRepository {
                 transaction.rollback();
             }
         }
+//        System.out.println("db query: "+JSON.toJSONString(result));
         return result;
     }
 
@@ -123,23 +142,25 @@ public class InvitationRepositoryImpl implements InvitationRepository {
      */
     public List<InvitationVO> getAcceptedInvitationsByTime(int uid, String currentTime) {
         SessionFactory factory = new Configuration().configure().buildSessionFactory();
-        List<com.se.vo.InvitationVO> result = null;
+        List<com.se.vo.InvitationVO> result = new ArrayList<>();
 
         Transaction transaction = null;
         try (Session session = factory.openSession()) {
             transaction = session.beginTransaction();
 
             CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<com.se.vo.InvitationVO> query = builder.createQuery(com.se.vo.InvitationVO.class);
-            Root<com.se.vo.InvitationVO> root = query.from(com.se.vo.InvitationVO.class);
+            CriteriaQuery<Invitation> query = builder.createQuery(Invitation.class);
+            Root<Invitation> root = query.from(Invitation.class);
 
             Predicate orClause = builder.or(builder.equal(root.get("senderId"), uid), builder.equal(root.get("receiverId"),uid));
             query.select(root).where(builder.greaterThanOrEqualTo(root.get("start"), currentTime), orClause, builder.equal(root.get("status"), InvitationStatus.ACCEPTED));
 
-            Query<com.se.vo.InvitationVO> q = session.createQuery(query);
+            Query<Invitation> q = session.createQuery(query);
 
-            result = q.getResultList();
-
+            List<Invitation> res = q.getResultList();
+            for (Invitation entity: res) {
+                result.add(new InvitationVO(entity));
+            }
             transaction.commit();
 
         } catch (Exception e) {
@@ -160,15 +181,14 @@ public class InvitationRepositoryImpl implements InvitationRepository {
      */
     public void setInvitationStatusRejected(int uid, String startTime) throws DataServiceOperationException {
         SessionFactory factory = new Configuration().configure().buildSessionFactory();
-        List<com.se.vo.InvitationVO> result = null;
 
         Transaction transaction = null;
         try (Session session = factory.openSession()) {
             transaction = session.beginTransaction();
 
             CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaUpdate<InvitationVO> update = builder.createCriteriaUpdate(com.se.vo.InvitationVO.class);
-            Root<com.se.vo.InvitationVO> root = update.from(com.se.vo.InvitationVO.class);
+            CriteriaUpdate<Invitation> update = builder.createCriteriaUpdate(Invitation.class);
+            Root<Invitation> root = update.from(Invitation.class);
 
             update.set("status", InvitationStatus.REJECTED);
             Predicate orClause = builder.or(builder.equal(root.get("senderId"), uid), builder.equal(root.get("receiverId"),uid));
@@ -194,15 +214,14 @@ public class InvitationRepositoryImpl implements InvitationRepository {
      */
     public void setInvitationStatusAccepted(int invitationId) throws DataServiceOperationException {
         SessionFactory factory = new Configuration().configure().buildSessionFactory();
-        List<com.se.vo.InvitationVO> result = null;
 
         Transaction transaction = null;
         try (Session session = factory.openSession()) {
             transaction = session.beginTransaction();
 
             CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaUpdate<InvitationVO> update = builder.createCriteriaUpdate(com.se.vo.InvitationVO.class);
-            Root<com.se.vo.InvitationVO> root = update.from(com.se.vo.InvitationVO.class);
+            CriteriaUpdate<Invitation> update = builder.createCriteriaUpdate(Invitation.class);
+            Root<Invitation> root = update.from(Invitation.class);
 
             update.set("status", InvitationStatus.ACCEPTED);
             update.where(builder.equal(root.get("invitationId"), invitationId));
@@ -227,19 +246,19 @@ public class InvitationRepositoryImpl implements InvitationRepository {
      */
     public InvitationStatus checkInvitationStatus(int invitationId) {
         SessionFactory factory = new Configuration().configure().buildSessionFactory();
-        com.se.vo.InvitationVO invitation = null;
+        Invitation invitation = null;
 
         Transaction transaction = null;
         try (Session session = factory.openSession()) {
             transaction = session.beginTransaction();
 
             CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<com.se.vo.InvitationVO> query = builder.createQuery(com.se.vo.InvitationVO.class);
-            Root<com.se.vo.InvitationVO> root = query.from(com.se.vo.InvitationVO.class);
+            CriteriaQuery<Invitation> query = builder.createQuery(Invitation.class);
+            Root<Invitation> root = query.from(Invitation.class);
             query.select(root).where(builder.equal(root.get("invitationId"), invitationId));
-            Query<com.se.vo.InvitationVO> q = session.createQuery(query);
+            Query<Invitation> q = session.createQuery(query);
             //avoid exception, set max results as 1
-            List<com.se.vo.InvitationVO> result = q.getResultList();
+            List<Invitation> result = q.getResultList();
             if (!result.isEmpty()) {
                 invitation = result.get(0);
             }
@@ -257,7 +276,7 @@ public class InvitationRepositoryImpl implements InvitationRepository {
     public static void main(String[] args){
         System.out.println("******Invitation test******");
         InvitationRepositoryImpl impl = new InvitationRepositoryImpl();
-        InvitationVO ivo = InvitationVO.builder().invitationId(4).senderId(1).receiverId(2).start("a").end("b").latitude(1.0).longitude(1.0).status(com.se.util.InvitationStatus.ACCEPTED).build();
-        impl.addInvitation(ivo);
+        Invitation ivo = Invitation.builder().invitationId(4).senderId(1).receiverId(2).start("a").end("b").latitude(1.0).longitude(1.0).status(com.se.util.InvitationStatus.ACCEPTED).build();
+        impl.addInvitation(new InvitationVO(ivo));
     }
 }

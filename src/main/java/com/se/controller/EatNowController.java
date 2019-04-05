@@ -1,12 +1,10 @@
 package com.se.controller;
 
+import com.se.vo.RealTimeLocationVO;
 import com.se.vo.UserBriefVO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -18,7 +16,7 @@ import java.util.List;
 public class EatNowController {
 
     @PostMapping("/recommendation")
-    public ResponseEntity<List<UserBriefVO>> getRecommendationList(HttpSession session, String realTimeAddress) {
+    public ResponseEntity<List<UserBriefVO>> getRecommendationList(@RequestBody RealTimeLocationVO vo) {
         List<UserBriefVO> list = new ArrayList<>(); // mock empty list
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
