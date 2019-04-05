@@ -42,11 +42,11 @@ public class EatLaterController {
      * @return
      */
     @PostMapping("/sendInvitation")
-    public ResponseEntity<String> sendInvitation(@RequestBody InvitationVO invitationVO, @RequestParam("uid") int uid) {
-        System.out.println(uid + ":" + invitationVO.getSenderId() + "," + invitationVO.getReceiverId());
-        if (uid != invitationVO.getSenderId()) {
-            return new ResponseEntity<>("Warning: sender id not match", HttpStatus.OK);
-        }
+    public ResponseEntity<String> sendInvitation(@RequestBody InvitationVO invitationVO) {
+//        System.out.println(uid + ":" + invitationVO.getSenderId() + "," + invitationVO.getReceiverId());
+//        if (uid != invitationVO.getSenderId()) {
+//            return new ResponseEntity<>("Warning: sender id not match", HttpStatus.OK);
+//        }
         if (!invitationService.sendInvitation(invitationVO)) {
             return new ResponseEntity<>("send failed", HttpStatus.OK);
         }
