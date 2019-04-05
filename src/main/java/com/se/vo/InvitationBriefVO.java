@@ -1,5 +1,6 @@
 package com.se.vo;
 
+
 /**
  * This class represents an invitation item shown on front end invitation page.
  */
@@ -13,6 +14,8 @@ public class InvitationBriefVO {
     public double longitude;
     public String start;
     public String end;
+
+    public InvitationBriefVO(){}
 
     public InvitationBriefVO(InvitationVO invitationVO) {
         this.invitationId = invitationVO.invitationId;

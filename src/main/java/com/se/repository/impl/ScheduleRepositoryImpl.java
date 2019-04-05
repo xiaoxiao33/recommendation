@@ -1,5 +1,7 @@
 package com.se.repository.impl;
 
+import com.se.Model.BusySlot;
+import com.se.Model.IntendSlot;
 import com.se.repository.ScheduleRepository;
 import com.se.vo.IntendVO;
 import com.se.vo.InvitationVO;
@@ -38,7 +40,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
 
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Integer> query = builder.createQuery(Integer.class);
-            Root<IntendVO> root = query.from(IntendVO.class);
+            Root<IntendSlot> root = query.from(IntendSlot.class);
 
             // result in the right side
             Predicate andA = builder.and(builder.greaterThan(root.get("startTime"),start), builder.lessThan(root.get("startTime"), end));
@@ -92,7 +94,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
 
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Integer> query = builder.createQuery(Integer.class);
-            Root<BusyVO> root = query.from(BusyVO.class);
+            Root<BusySlot> root = query.from(BusySlot.class);
 
             Predicate orClause = builder.or(builder.greaterThanOrEqualTo(root.get("startTime"), end), builder.lessThanOrEqualTo(root.get("endTime"), start));
             query.select(root.get("userId")).where(orClause, builder.notEqual(root.get("userId"), uid)).distinct(true);
@@ -132,9 +134,9 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
             transaction = session.beginTransaction();
 
             CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaDelete<BusyVO> delete = builder.createCriteriaDelete(BusyVO.class);
+            CriteriaDelete<BusySlot> delete = builder.createCriteriaDelete(BusySlot.class);
 
-            Root e = delete.from(BusyVO.class);
+            Root e = delete.from(BusySlot.class);
 
             //String currentTime = new SimpleDateFormat("yyyymmdd-hh").format(new Date());
             //delete.where(builder.lessThanOrEqualTo(e.get("end_time"), currentTime));
@@ -168,8 +170,8 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
         try (Session session = factory.openSession()) {
             transaction = session.beginTransaction();
 
-            BusyVO busyVO = BusyVO.builder().userId(uid).startTime(start).endTime(end).build();
-            session.save(busyVO);
+            BusySlot entity = BusySlot.builder().userId(uid).startTime(start).endTime(end).build();
+            session.save(entity);
             transaction.commit();
         } catch (Exception e) {
 
@@ -198,8 +200,8 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
         try (Session session = factory.openSession()) {
             transaction = session.beginTransaction();
 
-            IntendVO intendVO = IntendVO.builder().userId(uid).startTime(start).endTime(end).build();
-            session.save(intendVO);
+            IntendSlot entity = IntendSlot.builder().userId(uid).startTime(start).endTime(end).build();
+            session.save(entity);
             transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
