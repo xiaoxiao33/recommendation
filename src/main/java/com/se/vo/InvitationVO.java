@@ -32,6 +32,8 @@ public class InvitationVO {
 
     public InvitationStatus status;
 
+    public InvitationVO(){}
+
     public InvitationVO(Invitation entity) {
         this.invitationId = entity.getInvitationId();
         this.senderId = entity.getSenderId();
