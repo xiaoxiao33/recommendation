@@ -1,19 +1,16 @@
 package com.se.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.se.exception.DataServiceOperationException;
 import com.se.repository.InvitationRepository;
 import com.se.repository.ScheduleRepository;
-import com.se.service.InvitationService;
+import com.se.repository.UserProfileRepository;
 import com.se.util.InvitationStatus;
 import com.se.vo.InvitationBriefVO;
 import com.se.vo.InvitationVO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,12 +23,16 @@ public class InvitationManagementController {
 
     private final InvitationRepository invitationRepository;
     private final ScheduleRepository scheduleRepository;
+    private final UserProfileRepository userProfileRepository;
 
     private final static String PATTERN = "yyyy-MM-dd-HH-MM";
 
-    public InvitationManagementController(InvitationRepository invitationRepository, ScheduleRepository scheduleRepository) {
+    public InvitationManagementController(InvitationRepository invitationRepository,
+                                          ScheduleRepository scheduleRepository,
+                                          UserProfileRepository userProfileRepository) {
         this.invitationRepository = invitationRepository;
         this.scheduleRepository = scheduleRepository;
+        this.userProfileRepository = userProfileRepository;
     }
 
     /**
@@ -46,7 +47,7 @@ public class InvitationManagementController {
         for (InvitationVO invitationVo : activeInvites) {
 //            System.out.println("id:" + id + " receiverId:" + invitationVo.getReceiverId());
             if (invitationVo.receiverId == id) {
-                pendingInvites.add(new InvitationBriefVO(invitationVo));
+                pendingInvites.add(buildInvitationBriefVo(invitationVo));
             }
         }
         return new ResponseEntity<>(pendingInvites, HttpStatus.OK);
@@ -64,7 +65,7 @@ public class InvitationManagementController {
         List<InvitationBriefVO> waitingInvites = new ArrayList<>();
         for (InvitationVO invitationVo : activeInvites) {
             if (invitationVo.senderId == id) {
-                waitingInvites.add(new InvitationBriefVO(invitationVo));
+                waitingInvites.add(buildInvitationBriefVo(invitationVo));
             }
         }
         return new ResponseEntity<>(waitingInvites, HttpStatus.OK);
@@ -83,7 +84,7 @@ public class InvitationManagementController {
         List<InvitationVO> acceptedInvites = invitationRepository.getAcceptedInvitationsByTime(id, date);
         List<InvitationBriefVO> upcomingInvites = new ArrayList<>();
         for (InvitationVO invitationVO : acceptedInvites) {
-            upcomingInvites.add(new InvitationBriefVO(invitationVO));
+            upcomingInvites.add(buildInvitationBriefVo(invitationVO));
         }
 
         return new ResponseEntity<>(upcomingInvites, HttpStatus.OK);
@@ -119,6 +120,14 @@ public class InvitationManagementController {
 
         // An invitation is no longer active
         return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+
+    private InvitationBriefVO buildInvitationBriefVo(InvitationVO invitationVO) {
+        InvitationBriefVO invitationBriefVO = new InvitationBriefVO(invitationVO);
+        invitationBriefVO.rName = this.userProfileRepository.findProfileById(invitationVO.receiverId).get().getUsername();
+        invitationBriefVO.sName = this.userProfileRepository.findProfileById(invitationVO.senderId).get().getUsername();
+        return invitationBriefVO;
     }
 
     public static void main(String[] args) {

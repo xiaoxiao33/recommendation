@@ -15,7 +15,6 @@ import com.se.model.UserInfo;
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @Setter
 @Getter
-
 public class UserProfile {
 
     public UserProfile(UserInfo userInfo) {
@@ -71,5 +70,6 @@ public class UserProfile {
     public int getId() {
         return id;
     }
+    public String getUsername() {return username;}
 
 }

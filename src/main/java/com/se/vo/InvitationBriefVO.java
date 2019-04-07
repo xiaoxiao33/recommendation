@@ -14,6 +14,8 @@ public class InvitationBriefVO {
     public double longitude;
     public String start;
     public String end;
+    public String rName;
+    public String sName;
 
     public InvitationBriefVO(){}
 
