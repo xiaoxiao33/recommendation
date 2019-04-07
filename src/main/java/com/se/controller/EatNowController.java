@@ -21,7 +21,7 @@ public class EatNowController {
         UserBriefVO user = new UserBriefVO();
         user.avatar = "010101010";
         user.college = "morse";
-        user.gender = 0;
+        user.gender = "unknown";
         user.major = "computer science";
         user.username = "Jerry";
         user.uid = 4;

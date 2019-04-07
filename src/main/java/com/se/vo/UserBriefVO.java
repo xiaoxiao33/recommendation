@@ -6,7 +6,7 @@ package com.se.vo;
 public class UserBriefVO {
     public String username;
     public String avatar;
-    public int gender;
+    public String gender;
     public String major;
     public String college;
     public double distance;

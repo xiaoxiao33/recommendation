@@ -52,6 +52,9 @@ public class UserProfileRepository {
             CriteriaUpdate<UserProfile> update = builder.createCriteriaUpdate(UserProfile.class);
             Root root = update.from(UserProfile.class);
 
+            update.set("username", user.getUsername());
+            update.set("college", user.getCollege());
+
             update.set("gender", user.getGender());
             update.set("major", user.getMajor());
             update.set("age", user.getAge());

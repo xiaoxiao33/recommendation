@@ -116,7 +116,8 @@ public class UserManagementController  {
         System.out.println("session id: " + id);
 //        int id = Integer.parseInt(uid);
         int age = Integer.parseInt(ageS);
-        int gender = Integer.parseInt(genderS);
+        // int gender = Integer.parseInt(genderS);
+        String gender = genderS;
         Optional<UserProfile> profile = this.userProfileRepository.findProfileById(id);
 
         // Check if the profile associate with the id exists
