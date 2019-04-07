@@ -1,4 +1,4 @@
-create table mealdate.InvitationVO(
+create table mealdate.Invitation(
 	id serial primary key,
 	sender integer not null,
 	receiver integer not null,
@@ -11,7 +11,7 @@ create table mealdate.InvitationVO(
 	foreign key (receiver) references mealdate.userInfo(u_id)
 );
 
-create table mealdate.IntendVO(
+create table mealdate.IntendSlot(
 	id serial primary key,
 	u_id integer,
 	start_time varchar(32),
@@ -19,7 +19,7 @@ create table mealdate.IntendVO(
 	foreign key (u_id) references mealdate.userInfo(u_id)
 );
 
-create table mealdate.BusyVO(
+create table mealdate.BusySlot(
 	id serial primary key,
 	u_id integer,
 	start_time varchar(32),

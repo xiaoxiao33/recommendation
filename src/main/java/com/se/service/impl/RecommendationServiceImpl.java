@@ -12,6 +12,7 @@ import com.se.model.UserInfo;
 import com.se.Model.UserProfile;
 import com.se.util.ConstValue;
 import com.se.util.DistanceHelper;
+import com.se.util.TimeStrHelper;
 import com.se.vo.IntendVO;
 import com.se.vo.RealTimeLocationVO;
 import com.se.vo.UserBriefVO;
@@ -84,10 +85,7 @@ public class RecommendationServiceImpl implements RecommedationService {
     @Override
     public List<UserBriefVO> getRealTimeRecommendation(RealTimeLocationVO vo) {
         // update current location to userlocation table
-        String pattern = "yyyy-MM-dd-HH-mm";
-        SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
-        Date currentTime = new Date();
-        String time = dateFormat.format(currentTime);
+        String time = TimeStrHelper.getCurrentTime();
 
         if (!locationRepository.exist(vo.uid)) {
             locationRepository.addUserLocation(vo.latitude, vo.longitude, vo.uid, time);
@@ -96,9 +94,7 @@ public class RecommendationServiceImpl implements RecommedationService {
         }
 
         /* recommend based on recent location report and closest users */
-        long currentTimeValue = currentTime.getTime();
-        Date queryTime = new Date(currentTimeValue - 20*60*1000);
-        String queryTimeStr = dateFormat.format(queryTime);
+        String queryTimeStr = TimeStrHelper.getTimeBefore(20);
         System.out.println(queryTimeStr);
         List<UserLocation> list = locationRepository.getAllLocation(queryTimeStr);
         /* sort by distance*/
