@@ -9,7 +9,7 @@ import com.se.repository.UserInfoRepository;
 import com.se.repository.UserProfileRepository;
 import com.se.service.RecommedationService;
 import com.se.model.UserInfo;
-import com.se.model.UserProfile;
+import com.se.Model.UserProfile;
 import com.se.util.ConstValue;
 import com.se.util.DistanceHelper;
 import com.se.vo.IntendVO;

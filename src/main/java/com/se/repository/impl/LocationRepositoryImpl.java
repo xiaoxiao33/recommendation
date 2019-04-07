@@ -118,6 +118,48 @@ public class LocationRepositoryImpl implements LocationRepository {
         return;
     }
 
+    /**
+     *
+     * @param uid
+     * @return true if userlocation table already contains location record of this user
+     */
+    public boolean exist(int uid){
+        SessionFactory factory = new Configuration().configure().buildSessionFactory();
+        List<UserLocation> result = new ArrayList<>();
+
+        Transaction transaction = null;
+        try (Session session = factory.openSession()) {
+            transaction = session.beginTransaction();
+
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<UserLocation> query = builder.createQuery(UserLocation.class);
+            Root<UserLocation> root = query.from(UserLocation.class);
+
+            query.select(root).where(builder.equal(root.get("id"), uid));
+
+            Query<UserLocation> q = session.createQuery(query);
+
+            result = q.getResultList();
+
+            transaction.commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        }
+
+        if(result.isEmpty()){
+            //System.out.println("No");
+            return false;
+        }
+        else {
+            //System.out.println("Yes");
+            return true;
+        }
+    }
+
     public static void main(String[] args){
         /*LocationRepositoryImpl lri = new LocationRepositoryImpl();
         lri.addUserLocation(41.701, 100.2, 1, "2019-04-05-19-30");
@@ -128,8 +170,9 @@ public class LocationRepositoryImpl implements LocationRepository {
         lri.updateUserLocation(40.701, 100.2, 1, "2019-04-05-19-40");
 
         List<UserLocation> result = lri.getAllLocation("2019-04-05-19-45");
-        System.out.println(result);*/
-
+        System.out.println(result);
+        lri.exist(3);
+        lri.exist(5);*/
     }
 
 }

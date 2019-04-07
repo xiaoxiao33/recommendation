@@ -1,6 +1,6 @@
 package com.se.repository;
 
-import com.se.model.UserProfile;
+import com.se.Model.UserProfile;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
