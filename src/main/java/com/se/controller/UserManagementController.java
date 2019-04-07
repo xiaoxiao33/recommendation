@@ -70,7 +70,7 @@ public class UserManagementController  {
            return new ResponseEntity("Invalid Email Address", HttpStatus.BAD_REQUEST);
         }
 
-        // check if the user name and email address already exisit
+        // check if the user email address already exisit
         Optional<UserInfo> userInfo = userInfoRepository.findInfoByEmail(email);
         if (userInfoRepository.findInfoByEmail(email).isPresent()) {
             return new ResponseEntity("User already exist", HttpStatus.CONFLICT);
@@ -103,18 +103,12 @@ public class UserManagementController  {
                                                     @RequestParam("college") String college,
                                                     @RequestParam("age") String ageS,
                                                     @RequestParam("year") String year,
-                                                    @RequestParam("availability") String availability, HttpSession session) {
-        int id = -1;
-        if (session.getAttribute("id") == null) {
-            id = Integer.parseInt(uid);
-        } else {
-            id = (Integer)session.getAttribute("id");
-        }
-
-        System.out.println("session id: " + id);
-//        int id = Integer.parseInt(uid);
+                                                    @RequestParam("availability") String availability,
+                                                    @RequestParam("description") String description,
+                                                    @RequestParam("username") String username,
+                                                    @RequestParam("share_gps") String shareGps){
+        int id = Integer.parseInt(uid);
         int age = Integer.parseInt(ageS);
-        // int gender = Integer.parseInt(genderS);
         String gender = genderS;
         Optional<UserProfile> profile = this.userProfileRepository.findProfileById(id);
 
@@ -132,6 +126,9 @@ public class UserManagementController  {
                 .age(age)
                 .year(year)
                 .availability(availability.charAt(0))
+                .username(username)
+                .shared_gps(shareGps)
+                .description(description)
                 .build();
         userProfileRepository.updateProfile(userProfile);
         return new ResponseEntity<>("Updated successfully", HttpStatus.OK);
