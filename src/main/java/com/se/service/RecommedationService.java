@@ -1,6 +1,7 @@
 package com.se.service;
 
 import com.se.vo.IntendVO;
+import com.se.vo.RealTimeLocationVO;
 import com.se.vo.UserBriefVO;
 import org.springframework.stereotype.Service;
 
@@ -12,5 +13,6 @@ public interface RecommedationService {
     // match by not busy slots
     public List<UserBriefVO> getRecommendation(IntendVO intendVO, int uid);
 
+    public List<UserBriefVO> getRealTimeRecommendation(RealTimeLocationVO vo);
 
 }
