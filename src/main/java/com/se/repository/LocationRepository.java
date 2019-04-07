@@ -13,6 +13,12 @@ public interface LocationRepository {
      */
     public List<UserLocation> getAllLocation(String date);
 
+    /**
+     *
+     * @param uid
+     * @return true if userlocation table already contains location record of this user
+     */
+    public boolean exist(int uid);
 
     /**
      *
@@ -31,6 +37,5 @@ public interface LocationRepository {
      */
 
     public void updateUserLocation(double latitude, double longitude, int userId, String time);
-
 
 }

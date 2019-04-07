@@ -2,7 +2,7 @@ package com.se.controller;
 
 import com.se.exception.ResourceNotFoundException;
 import com.se.model.UserInfo;
-import com.se.model.UserProfile;
+import com.se.Model.UserProfile;
 import com.se.repository.UserInfoRepository;
 import com.se.repository.UserProfileRepository;
 import com.se.service.PasswordSecurityService;

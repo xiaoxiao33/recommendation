@@ -49,7 +49,7 @@
 
         <!-- <mapping resource="com/hik/gss/sys/domain/User.hbm.xml" />-->
         <mapping class="com.se.model.UserInfo" />
-        <mapping class="com.se.model.UserProfile" />
+        <mapping class="com.se.Model.UserProfile" />
         <mapping class="com.se.Model.Invitation" />
         <mapping class="com.se.Model.IntendSlot" />
         <mapping class="com.se.Model.BusySlot" />

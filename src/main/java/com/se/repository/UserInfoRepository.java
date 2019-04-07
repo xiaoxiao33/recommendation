@@ -1,7 +1,7 @@
 package com.se.repository;
 
 import com.se.model.UserInfo;
-import com.se.model.UserProfile;
+import com.se.Model.UserProfile;
 import com.se.service.PasswordSecurityService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
