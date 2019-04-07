@@ -61,8 +61,7 @@ public class UserManagementController  {
 
 
     @PostMapping("/register")
-    public ResponseEntity<Integer> addUser(@RequestParam("username") String username,
-                                          @RequestParam("email") String email,
+    public ResponseEntity<Integer> addUser(@RequestParam("email") String email,
                                           @RequestParam("password") String password,
                                           HttpSession session){
         // Check if email address is from yale.edu, xiaoxiao.ouyang@yale.edu
@@ -72,13 +71,12 @@ public class UserManagementController  {
         }
 
         // check if the user name and email address already exisit
-        Optional<UserInfo> userInfo = userInfoRepository.findInfoByUsername(username);
-        if (userInfoRepository.findInfoByUsername(username).isPresent() ||
-                userInfoRepository.findInfoByEmail(email).isPresent()) {
+        Optional<UserInfo> userInfo = userInfoRepository.findInfoByEmail(email);
+        if (userInfoRepository.findInfoByEmail(email).isPresent()) {
             return new ResponseEntity("User already exist", HttpStatus.CONFLICT);
         }
 
-        UserInfo newUserInfo = UserInfo.builder().username(username).password(password).email(email).build();
+        UserInfo newUserInfo = UserInfo.builder().password(password).email(email).build();
         // Save userInfo to userInfoRepository, userProfileRepository updated at the same time
         // ? handle failure of the API
         this.userInfoRepository.saveInfo(newUserInfo);

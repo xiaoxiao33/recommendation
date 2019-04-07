@@ -22,9 +22,6 @@ public class UserInfo {
     @Column(name = "u_id")
     private int id;
 
-    @Column(name = "username")
-    private String username;  // unique to the user
-
     @Column(name = "passwd")
     private String password;
 

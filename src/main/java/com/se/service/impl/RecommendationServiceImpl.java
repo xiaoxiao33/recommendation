@@ -72,6 +72,7 @@ public class RecommendationServiceImpl implements RecommedationService {
         for (int id: mergedList) {
             if (counter >= ConstValue.RECOM_LIMIT) break;
             if (!cache.containsKey(id)) {
+
                 UserBriefVO userBriefVO = this.makeUserBriefVO(id);
                 // add into cached
                 cache.put(id, userBriefVO);
