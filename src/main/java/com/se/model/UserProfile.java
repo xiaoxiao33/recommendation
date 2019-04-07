@@ -20,7 +20,7 @@ public class UserProfile {
 
     public UserProfile(UserInfo userInfo) {
         id = userInfo.getId();
-        gender=-1;
+        gender="unknown";
         major="unknow";
         age=-1;
         year="unknow";
@@ -33,9 +33,11 @@ public class UserProfile {
     @Column(name="u_id")
     private int id;  // Primary Key for finding a user.
 
+    @Column(name = "username")
+    private String username;
 
     @Column(name = "gender")
-    private int gender;
+    private String gender;
 
 
     @Column(name = "major")
