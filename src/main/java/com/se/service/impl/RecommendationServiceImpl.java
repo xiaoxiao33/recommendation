@@ -166,6 +166,7 @@ public class RecommendationServiceImpl implements RecommedationService {
         userBriefVO.college = userProfile.getCollege();
         userBriefVO.major = userProfile.getMajor();
         userBriefVO.distance = distance;
+        userBriefVO.uid = userProfile.getId();
         return userBriefVO;
     }
 }
