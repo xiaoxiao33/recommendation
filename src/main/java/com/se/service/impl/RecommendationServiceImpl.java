@@ -5,10 +5,8 @@ import com.se.Model.UserLocation;
 import com.se.exception.ResourceNotFoundException;
 import com.se.repository.LocationRepository;
 import com.se.repository.ScheduleRepository;
-import com.se.repository.UserInfoRepository;
 import com.se.repository.UserProfileRepository;
 import com.se.service.RecommedationService;
-import com.se.model.UserInfo;
 import com.se.Model.UserProfile;
 import com.se.util.ConstValue;
 import com.se.util.DistanceHelper;
@@ -19,7 +17,6 @@ import com.se.vo.UserBriefVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -94,9 +91,26 @@ public class RecommendationServiceImpl implements RecommedationService {
         }
 
         /* recommend based on recent location report and closest users */
-        String queryTimeStr = TimeStrHelper.getTimeBefore(20);
+        String queryTimeStr = TimeStrHelper.getTimeBefore(ConstValue.NOW_BEFORE);
         System.out.println(queryTimeStr);
-        List<UserLocation> list = locationRepository.getAllLocation(queryTimeStr);
+        List<UserLocation> querylist = locationRepository.getAllLocation(queryTimeStr);
+        System.out.println("all location:" +JSON.toJSONString(querylist));
+        /* filter busy slot conflict */
+        List<Integer> busyMatchList = scheduleRepository.findByNonConlictSlot(vo.uid, TimeStrHelper.getCurrentTime(), TimeStrHelper.getTimeBefore(-30));
+        System.out.println("nonconflict slot:" + JSON.toJSONString(busyMatchList));
+        Set<Integer> set = new HashSet<>();
+        List<UserLocation> list = new ArrayList<>();
+        for (Integer i: busyMatchList) {
+            set.add(i);
+        }
+        System.out.println(set);
+        for (UserLocation uloc: querylist) {
+            System.out.println("uloc:" + JSON.toJSONString(uloc));
+            if (set.contains(uloc.getId())) {
+                list.add(uloc);
+            }
+        }
+        System.out.println("filtered list:" + JSON.toJSONString(list));
         /* sort by distance*/
         PriorityQueue<Distance> pq = new PriorityQueue<>();   // min heap
         for (UserLocation userLocation: list) {
@@ -108,6 +122,7 @@ public class RecommendationServiceImpl implements RecommedationService {
         }
         List<UserBriefVO> res = new ArrayList<>();
         int limit = Math.min(ConstValue.EATNOW_RECOM_LIMIT, pq.size());
+        System.out.println("limit:" + limit);
         for (int i = 0; i < limit; i++) {
             Distance dobj = pq.poll();
             if (!cache.containsKey(dobj.uid)) {
@@ -116,6 +131,7 @@ public class RecommendationServiceImpl implements RecommedationService {
             }
             res.add(cache.get(dobj.uid));
         }
+        System.out.println("res:" + JSON.toJSONString(res));
         return res;
     }
 
