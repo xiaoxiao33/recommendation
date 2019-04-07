@@ -9,10 +9,8 @@ public class UserBriefVO {
     public String gender;
     public String major;
     public String college;
-    public String description;
-    public String email;
-    public String shared_gps;
-
     public double distance;
     public int uid;
+
+    public UserBriefVO () {}
 }

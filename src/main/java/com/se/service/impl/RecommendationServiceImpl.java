@@ -28,9 +28,6 @@ public class RecommendationServiceImpl implements RecommedationService {
     private ScheduleRepository scheduleRepository;
 
     @Autowired
-    private UserInfoRepository userInfoRepository;
-
-    @Autowired
     private UserProfileRepository userProfileRepository;
 
     @Autowired
@@ -72,8 +69,7 @@ public class RecommendationServiceImpl implements RecommedationService {
         for (int id: mergedList) {
             if (counter >= ConstValue.RECOM_LIMIT) break;
             if (!cache.containsKey(id)) {
-
-                UserBriefVO userBriefVO = this.makeUserBriefVO(id);
+                UserBriefVO userBriefVO = this.makeUserBriefVO(id, -1);
                 // add into cached
                 cache.put(id, userBriefVO);
             }
@@ -92,8 +88,12 @@ public class RecommendationServiceImpl implements RecommedationService {
         SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
         Date currentTime = new Date();
         String time = dateFormat.format(currentTime);
-        System.out.println(time);
-        locationRepository.updateUserLocation(vo.latitude, vo.longitude, vo.uid, time);
+
+        if (!locationRepository.exist(vo.uid)) {
+            locationRepository.addUserLocation(vo.latitude, vo.longitude, vo.uid, time);
+        } else {
+            locationRepository.updateUserLocation(vo.latitude, vo.longitude, vo.uid, time);
+        }
 
         /* recommend based on recent location report and closest users */
         long currentTimeValue = currentTime.getTime();
@@ -111,10 +111,11 @@ public class RecommendationServiceImpl implements RecommedationService {
             }
         }
         List<UserBriefVO> res = new ArrayList<>();
-        for (int i = 0; i < ConstValue.EATNOW_RECOM_LIMIT; i++) {
+        int limit = Math.min(ConstValue.EATNOW_RECOM_LIMIT, pq.size());
+        for (int i = 0; i < limit; i++) {
             Distance dobj = pq.poll();
             if (!cache.containsKey(dobj.uid)) {
-                UserBriefVO userBriefVO = this.makeUserBriefVO(dobj.uid);
+                UserBriefVO userBriefVO = this.makeUserBriefVO(dobj.uid, dobj.dist);
                 cache.put(dobj.uid, userBriefVO);
             }
             res.add(cache.get(dobj.uid));
@@ -138,7 +139,7 @@ public class RecommendationServiceImpl implements RecommedationService {
         }
     }
 
-    private UserBriefVO makeUserBriefVO(int uid) {
+    private UserBriefVO makeUserBriefVO(int uid, double distance) {
         // query user info
         Optional<UserProfile> optionalUserProfile = userProfileRepository.findProfileById(uid);
         if (!optionalUserProfile.isPresent()) {
@@ -151,6 +152,7 @@ public class RecommendationServiceImpl implements RecommedationService {
         userBriefVO.gender = userProfile.getGender();
         userBriefVO.college = userProfile.getCollege();
         userBriefVO.major = userProfile.getMajor();
+        userBriefVO.distance = distance;
         return userBriefVO;
     }
 }

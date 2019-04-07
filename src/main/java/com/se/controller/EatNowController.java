@@ -26,7 +26,7 @@ public class EatNowController {
 
     @PostMapping("/recommendation")
     public ResponseEntity<List<UserBriefVO>> getRecommendationList(@RequestBody RealTimeLocationVO vo) {
-        List<UserBriefVO> list = recommedationService.getRealTimeRecommendation(vo); // mock empty list
+        List<UserBriefVO> list = recommedationService.getRealTimeRecommendation(vo);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 }
