@@ -43,6 +43,8 @@
 
         <!-- Echo all executed SQL to stdout -->
         <property name="show_sql">false</property>
+        <!-- disable invocation exception -->
+        <property name="hibernate.temp.use_jdbc_metadata_defaults">false</property>
 
         <!-- Drop and re-create the database schema on startup -->
         <!-- <property name="hbm2ddl.auto">update</property> -->
