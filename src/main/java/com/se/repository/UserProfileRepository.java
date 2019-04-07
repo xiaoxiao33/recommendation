@@ -54,11 +54,13 @@ public class UserProfileRepository {
 
             update.set("username", user.getUsername());
             update.set("college", user.getCollege());
-
+            update.set("description", user.getDescription());
+            update.set("shared_gps", user.getShared_gps());
             update.set("gender", user.getGender());
             update.set("major", user.getMajor());
             update.set("age", user.getAge());
             update.set("year", user.getYear());
+            update.set("availability", user.getAvailability());
             update.where(builder.equal(root.get("id"), user.getId()));
             session.createQuery(update).executeUpdate();
 

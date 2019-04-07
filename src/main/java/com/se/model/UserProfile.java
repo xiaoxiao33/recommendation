@@ -20,12 +20,15 @@ public class UserProfile {
 
     public UserProfile(UserInfo userInfo) {
         id = userInfo.getId();
+        email = userInfo.getEmail();
         gender="unknown";
-        username=userInfo.getUsername();
+        username=userInfo.getEmail();
+        description="unknown";
         major="unknow";
         age=-1;
         year="unknow";
-        availability = 'T';
+        shared_gps = "F";
+        availability = 'F';
     }
 
     // Foreign key dependency not set yet
@@ -40,7 +43,6 @@ public class UserProfile {
     @Column(name = "gender")
     private String gender;
 
-
     @Column(name = "major")
     private String major;
 
@@ -48,9 +50,17 @@ public class UserProfile {
     @Column(name = "u_age")
     private int age;
 
-
     @Column(name = "u_year")
     private String year;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "shared_gps")
+    private String shared_gps;
+
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "availability")
     private char availability;

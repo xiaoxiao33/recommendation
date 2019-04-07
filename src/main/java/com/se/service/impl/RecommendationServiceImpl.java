@@ -70,7 +70,7 @@ public class RecommendationServiceImpl implements RecommedationService {
                 UserInfo userInfo = optionalUserInfo.get();
                 UserProfile userProfile = optionalUserProfile.get();
                 UserBriefVO userBriefVO = new UserBriefVO();
-                userBriefVO.username = userInfo.getUsername();
+                userBriefVO.username = userProfile.getUsername();
                 userBriefVO.avatar = "default";
                 userBriefVO.gender = userProfile.getGender();
                 userBriefVO.college = "College";
