@@ -21,6 +21,7 @@ public class UserProfile {
     public UserProfile(UserInfo userInfo) {
         id = userInfo.getId();
         gender="unknown";
+        username=userInfo.getUsername();
         major="unknow";
         age=-1;
         year="unknow";
