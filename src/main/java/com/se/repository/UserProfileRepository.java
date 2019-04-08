@@ -28,6 +28,8 @@ public class UserProfileRepository {
             transaction = session.beginTransaction();
             session.save(user);
             transaction.commit();
+            session.close();
+            factory.close();
         } catch (Exception e) {
             e.printStackTrace();
             if (transaction != null) {
@@ -65,6 +67,8 @@ public class UserProfileRepository {
             session.createQuery(update).executeUpdate();
 
             transaction.commit();
+            session.close();
+            factory.close();
         } catch (Exception e) {
             e.printStackTrace();
             if (transaction != null) {
@@ -96,6 +100,8 @@ public class UserProfileRepository {
             //System.out.println(user.getId()+user.getUsername()+": Get by Id");
             opt = Optional.ofNullable(userProfile);
             transaction.commit();
+            session.close();
+            factory.close();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -128,7 +134,8 @@ public class UserProfileRepository {
             //System.out.println(user.getId()+user.getUsername()+": Get by name");
             opt = Optional.ofNullable(userProfile);
             transaction.commit();
-
+            session.close();
+            factory.close();
         } catch (Exception e) {
             e.printStackTrace();
             if (transaction != null) {
@@ -157,6 +164,8 @@ public class UserProfileRepository {
                 System.out.println(u.getId()+" "+u.getUsername());
             }*/
             transaction.commit();
+            session.close();
+            factory.close();
             return result;
         } catch (Exception e) {
             e.printStackTrace();

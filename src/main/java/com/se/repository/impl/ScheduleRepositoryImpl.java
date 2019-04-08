@@ -62,11 +62,14 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
 
             if (q.getResultList().size()==0){
                 System.out.println("There is no matching slot");
+
             }else{
                 for(Integer i: q.getResultList()) {
                     System.out.println("Matching ID: " + i);
                 }
             }
+            session.close();
+            factory.close();
             return q.getResultList();
 
         } catch (Exception e) {
@@ -109,6 +112,8 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
                     System.out.println("Non-conflict ID: " + i);
                 }
             }
+            session.close();
+            factory.close();
             return q.getResultList();
 
         } catch (Exception e) {
@@ -163,6 +168,8 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
                     System.out.println("Conflicted ID: " + i);
                 }
             }
+            session.close();
+            factory.close();
             return q.getResultList();
 
         } catch (Exception e) {
@@ -200,7 +207,8 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
             session.createQuery(delete).executeUpdate();
 
             transaction.commit();
-
+            session.close();
+            factory.close();
         } catch (Exception e) {
             e.printStackTrace();
             if (transaction != null) {
@@ -227,6 +235,8 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
             BusySlot entity = BusySlot.builder().userId(uid).startTime(start).endTime(end).build();
             session.save(entity);
             transaction.commit();
+            session.close();
+            factory.close();
         } catch (Exception e) {
             e.printStackTrace();
             if (transaction != null) {
@@ -253,6 +263,8 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
             IntendSlot entity = IntendSlot.builder().userId(uid).startTime(start).endTime(end).build();
             session.save(entity);
             transaction.commit();
+            session.close();
+            factory.close();
         } catch (Exception e) {
             e.printStackTrace();
             if (transaction != null) {

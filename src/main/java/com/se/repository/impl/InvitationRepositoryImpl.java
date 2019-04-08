@@ -47,6 +47,8 @@ public class InvitationRepositoryImpl implements InvitationRepository {
             /*end convert*/
             session.save(entity);
             transaction.commit();
+            session.close();
+            factory.close();
             return true;
 
         } catch (Exception e) {
@@ -84,7 +86,8 @@ public class InvitationRepositoryImpl implements InvitationRepository {
                  invitation = new InvitationVO(entity);
             }
             transaction.commit();
-
+            session.close();
+            factory.close();
         } catch (Exception e) {
             e.printStackTrace();
             if (transaction != null) {
@@ -122,7 +125,8 @@ public class InvitationRepositoryImpl implements InvitationRepository {
                 result.add(new InvitationVO(entity));
             }
             transaction.commit();
-
+            session.close();
+            factory.close();
         } catch (Exception e) {
             e.printStackTrace();
             if (transaction != null) {
@@ -162,7 +166,8 @@ public class InvitationRepositoryImpl implements InvitationRepository {
                 result.add(new InvitationVO(entity));
             }
             transaction.commit();
-
+            session.close();
+            factory.close();
         } catch (Exception e) {
             e.printStackTrace();
             if (transaction != null) {
@@ -197,7 +202,8 @@ public class InvitationRepositoryImpl implements InvitationRepository {
             session.createQuery(update).executeUpdate();
 
             transaction.commit();
-
+            session.close();
+            factory.close();
         } catch (Exception e) {
             e.printStackTrace();
             if (transaction != null) {
@@ -229,7 +235,8 @@ public class InvitationRepositoryImpl implements InvitationRepository {
             session.createQuery(update).executeUpdate();
 
             transaction.commit();
-
+            session.close();
+            factory.close();
         } catch (Exception e) {
             e.printStackTrace();
             if (transaction != null) {
@@ -263,7 +270,8 @@ public class InvitationRepositoryImpl implements InvitationRepository {
                 invitation = result.get(0);
             }
             transaction.commit();
-
+            session.close();
+            factory.close();
         } catch (Exception e) {
             e.printStackTrace();
             if (transaction != null) {

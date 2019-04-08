@@ -54,6 +54,8 @@ public class UserInfoRepository {
             session.save(profile);
 
             transaction.commit();
+            session.close();
+            factory.close();
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -88,7 +90,8 @@ public class UserInfoRepository {
                 System.out.println(u.getId()+" "+u.getEmail()+" "+u.getPassword());
             }
             transaction.commit();
-
+            session.close();
+            factory.close();
         } catch (Exception e) {
             e.printStackTrace();
             if (transaction != null) {
@@ -161,6 +164,8 @@ public class UserInfoRepository {
             // System.out.println(user.getId()+user.getUsername()+user.getPassword());
             opt = Optional.ofNullable(userInfo);
             transaction.commit();
+            session.close();
+            factory.close();
         }catch (Exception e) {
             e.printStackTrace();
             if (transaction != null) {
@@ -199,7 +204,8 @@ public class UserInfoRepository {
             //System.out.println(user.getId()+user.getUsername()+": Get by Id");
             opt = Optional.ofNullable(userInfo);
             transaction.commit();
-
+            session.close();
+            factory.close();
         } catch (Exception e) {
             e.printStackTrace();
             if (transaction != null) {
@@ -228,6 +234,8 @@ public class UserInfoRepository {
             session.createQuery(update).executeUpdate();
 
             transaction.commit();
+            session.close();
+            factory.close();
         } catch (Exception e) {
             e.printStackTrace();
             if (transaction != null) {
