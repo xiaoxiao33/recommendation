@@ -68,9 +68,11 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
                     System.out.println("Matching ID: " + i);
                 }
             }
+            List<Integer> res = q.getResultList();
             session.close();
             factory.close();
-            return q.getResultList();
+
+            return res;
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -112,9 +114,10 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
                     System.out.println("Non-conflict ID: " + i);
                 }
             }
+            List<Integer> res = q.getResultList();
             session.close();
             factory.close();
-            return q.getResultList();
+            return res;
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -168,9 +171,10 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
                     System.out.println("Conflicted ID: " + i);
                 }
             }
+            List<Integer> res = q.getResultList();
             session.close();
             factory.close();
-            return q.getResultList();
+            return res;
 
         } catch (Exception e) {
             e.printStackTrace();
