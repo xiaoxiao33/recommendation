@@ -275,6 +275,9 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
         srImpl.addIntendSlot(2,"20190326-01", "20190326-06");
         srImpl.addIntendSlot(3,"20190325-01", "20190325-06");
 
+        srImpl.addSlot(3,"20190325-01", "20190325-06");
+        srImpl.addSlot(3,"20190324-01", "20190324-06");
+
         // test deleteExpiredBusySlots
         srImpl.deleteExpiredBusySlots("20190302-07");
 
@@ -290,6 +293,9 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
         srImpl.findByMatchedSlot(4, "20190325-01", "20190325-06"); // exactly the same interval
         srImpl.findByMatchedSlot(4, "20190329-01", "20190329-06"); // No matching interval
 
+        srImpl.findByConflictSlot(4, "20190324-01", "20190324-06"); // No matching interval
+        srImpl.findByConflictSlot(4, "20190326-01", "20190326-06"); // No matching interval
+        srImpl.findByConflictSlot(4, "20190324-01", "20190324-06"); // No matching interval
 
 
         System.out.println(" Done with addin" + "g slot");
