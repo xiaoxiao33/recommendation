@@ -21,7 +21,7 @@ public class DistanceHelper {
     }
 
     public static void main(String[] args) {
-        double test1 = DistanceHelper.distance(51.4826, 0, 41.3, -72.9279);
+        double test1 = DistanceHelper.distance(41.3128, -72.9251, 41.3095022158125, -72.923641204834);
         System.out.println(test1);
     }
 }

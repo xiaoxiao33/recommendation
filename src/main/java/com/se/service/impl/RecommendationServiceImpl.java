@@ -99,12 +99,12 @@ public class RecommendationServiceImpl implements RecommedationService {
         List<UserLocation> list = new ArrayList<>();
 
         Set<Integer> set = new HashSet<>();
-//        List<Integer> busyMatchList = scheduleRepository.findByConlictSlot(vo.uid, TimeStrHelper.getCurrentTime(), TimeStrHelper.getTimeBefore(-30));
-//        System.out.println("nonconflict slot:" + JSON.toJSONString(busyMatchList));
-//        for (Integer i: busyMatchList) {
-//            set.add(i);
-//        }
-//        System.out.println(set);
+        List<Integer> busyMatchList = scheduleRepository.findByConflictSlot(vo.uid, TimeStrHelper.getCurrentTime(), TimeStrHelper.getTimeBefore(-30));
+        System.out.println("nonconflict slot:" + JSON.toJSONString(busyMatchList));
+        for (Integer i: busyMatchList) {
+            set.add(i);
+        }
+        System.out.println(set);
         for (UserLocation uloc: querylist) {
             System.out.println("uloc:" + JSON.toJSONString(uloc));
             if (!set.contains(uloc.getId())) {
