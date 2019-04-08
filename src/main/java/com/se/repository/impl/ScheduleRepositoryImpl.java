@@ -120,6 +120,60 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
         return null;
     }
 
+/**
+     * busy slots table
+     * @param uid
+     * @param start
+     * @param end
+     * @return
+     */
+    public List<Integer> findByConflictSlot (int uid, String start, String end) {
+        SessionFactory factory = new Configuration().configure().buildSessionFactory();
+
+        Transaction transaction = null;
+        try (Session session = factory.openSession()) {
+            transaction = session.beginTransaction();
+
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Integer> query = builder.createQuery(Integer.class);
+            Root<BusySlot> root = query.from(BusySlot.class);
+
+            // result in the right side
+            Predicate andA = builder.and(builder.greaterThan(root.get("startTime"),start), builder.lessThan(root.get("startTime"), end));
+
+            // result in the left side
+            Predicate andB = builder.and(builder.greaterThan(root.get("endTime"),start), builder.lessThan(root.get("endTime"), end));
+
+            // result include input
+            Predicate andC = builder.and(builder.lessThanOrEqualTo(root.get("startTime"),start), builder.greaterThanOrEqualTo(root.get("endTime"), end));
+
+            // input include result
+            Predicate andD = builder.and(builder.greaterThanOrEqualTo(root.get("startTime"),start), builder.lessThanOrEqualTo(root.get("endTime"), end));
+
+            Predicate orClause = builder.or(andA, andB, andC, andD);
+            query.select(root.get("userId")).where(orClause, builder.notEqual(root.get("userId"), uid)).distinct(true);
+
+            Query<Integer> q = session.createQuery(query);
+            transaction.commit();
+
+            if (q.getResultList().size()==0){
+                System.out.println("There is no conflict slot");
+            }else{
+                for(Integer i: q.getResultList()) {
+                    System.out.println("Conflicted ID: " + i);
+                }
+            }
+            return q.getResultList();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        }
+        return null;
+    }
+
 
     /**
      * delete all rows previous to given time
@@ -221,6 +275,9 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
         srImpl.addIntendSlot(2,"20190326-01", "20190326-06");
         srImpl.addIntendSlot(3,"20190325-01", "20190325-06");
 
+        srImpl.addSlot(3,"20190325-01", "20190325-06");
+        srImpl.addSlot(3,"20190324-01", "20190324-06");
+
         // test deleteExpiredBusySlots
         srImpl.deleteExpiredBusySlots("20190302-07");
 
@@ -236,6 +293,9 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
         srImpl.findByMatchedSlot(4, "20190325-01", "20190325-06"); // exactly the same interval
         srImpl.findByMatchedSlot(4, "20190329-01", "20190329-06"); // No matching interval
 
+        srImpl.findByConflictSlot(4, "20190324-01", "20190324-06"); // No matching interval
+        srImpl.findByConflictSlot(4, "20190326-01", "20190326-06"); // No matching interval
+        srImpl.findByConflictSlot(4, "20190324-01", "20190324-06"); // No matching interval
 
 
         System.out.println(" Done with addin" + "g slot");

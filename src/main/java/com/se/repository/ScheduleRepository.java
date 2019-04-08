@@ -22,7 +22,7 @@ public interface ScheduleRepository {
      */
     public List<Integer> findByNonConlictSlot (int uid, String start, String end);
 
-//    public List<Integer> findByConflictSlot (int uid, String start, String end);
+    public List<Integer> findByConflictSlot (int uid, String start, String end);
 
     /**
      * delete all rows previous to given time
