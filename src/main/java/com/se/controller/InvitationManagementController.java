@@ -1,5 +1,6 @@
 package com.se.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.se.exception.DataServiceOperationException;
 import com.se.repository.InvitationRepository;
 import com.se.repository.ScheduleRepository;
@@ -82,6 +83,9 @@ public class InvitationManagementController {
         String date = simpleDateFormat.format(new Date());
 
         List<InvitationVO> acceptedInvites = invitationRepository.getAcceptedInvitationsByTime(id, date);
+
+        System.out.println("Current date: " + date);
+        System.out.println(JSON.toJSONString("This is accepted invites : " + acceptedInvites));
         List<InvitationBriefVO> upcomingInvites = new ArrayList<>();
         for (InvitationVO invitationVO : acceptedInvites) {
             upcomingInvites.add(buildInvitationBriefVo(invitationVO));
