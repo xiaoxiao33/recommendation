@@ -85,7 +85,7 @@ public class InvitationManagementController {
         List<InvitationVO> acceptedInvites = invitationRepository.getAcceptedInvitationsByTime(id, date);
 
         System.out.println("Current date: " + date);
-        System.out.println(JSON.toJSONString("This is accepted invites : " + acceptedInvites));
+        System.out.println("This is accepted invites : " + JSON.toJSONString( acceptedInvites));
         List<InvitationBriefVO> upcomingInvites = new ArrayList<>();
         for (InvitationVO invitationVO : acceptedInvites) {
             upcomingInvites.add(buildInvitationBriefVo(invitationVO));
