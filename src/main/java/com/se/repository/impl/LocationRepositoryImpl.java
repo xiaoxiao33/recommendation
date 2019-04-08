@@ -44,7 +44,8 @@ public class LocationRepositoryImpl implements LocationRepository {
             result = q.getResultList();
 
             transaction.commit();
-
+            session.close();
+            factory.close();
         } catch (Exception e) {
             e.printStackTrace();
             if (transaction != null) {
@@ -72,6 +73,8 @@ public class LocationRepositoryImpl implements LocationRepository {
             session.save(ul);
 
             transaction.commit();
+            session.close();
+            factory.close();
         } catch (Exception e) {
             e.printStackTrace();
             if (transaction != null) {
@@ -109,6 +112,8 @@ public class LocationRepositoryImpl implements LocationRepository {
             session.createQuery(update).executeUpdate();
 
             transaction.commit();
+            session.close();
+            factory.close();
         } catch (Exception e) {
             e.printStackTrace();
             if (transaction != null) {
@@ -142,7 +147,8 @@ public class LocationRepositoryImpl implements LocationRepository {
             result = q.getResultList();
 
             transaction.commit();
-
+            session.close();
+            factory.close();
         } catch (Exception e) {
             e.printStackTrace();
             if (transaction != null) {
