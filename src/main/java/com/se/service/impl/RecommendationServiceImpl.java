@@ -100,10 +100,11 @@ public class RecommendationServiceImpl implements RecommedationService {
 
         Set<Integer> set = new HashSet<>();
         List<Integer> busyMatchList = scheduleRepository.findByConflictSlot(vo.uid, TimeStrHelper.getCurrentTime(), TimeStrHelper.getTimeBefore(-30));
-        System.out.println("nonconflict slot:" + JSON.toJSONString(busyMatchList));
+        System.out.println("conflict slot:" + JSON.toJSONString(busyMatchList));
         for (Integer i: busyMatchList) {
             set.add(i);
         }
+        set.add(vo.uid);
         System.out.println(set);
         for (UserLocation uloc: querylist) {
             System.out.println("uloc:" + JSON.toJSONString(uloc));
@@ -115,7 +116,8 @@ public class RecommendationServiceImpl implements RecommedationService {
         /* sort by distance*/
         PriorityQueue<Distance> pq = new PriorityQueue<>();   // min heap
         for (UserLocation userLocation: list) {
-            double dist = DistanceHelper.distance(vo.latitude, vo.latitude, userLocation.getLatitude(), userLocation.getLongitude());
+            double dist = DistanceHelper.distance(vo.latitude, vo.longitude, userLocation.getLatitude(), userLocation.getLongitude());
+//            System.out.println("distance calculator: "+dist);
             pq.offer(new Distance(userLocation.getId(), dist));
             if (pq.size() > ConstValue.EATNOW_RECOM_LIMIT) {
                 pq.poll();
@@ -126,6 +128,7 @@ public class RecommendationServiceImpl implements RecommedationService {
         System.out.println("limit:" + limit);
         for (int i = 0; i < limit; i++) {
             Distance dobj = pq.poll();
+//            System.out.println("selected distance:" + dobj.dist);
             if (!cache.containsKey(dobj.uid)) {
                 UserBriefVO userBriefVO = this.makeUserBriefVO(dobj.uid, dobj.dist);
                 cache.put(dobj.uid, userBriefVO);
