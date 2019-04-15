@@ -5,5 +5,5 @@ public class ConstValue {
 
     public static int EATNOW_RECOM_LIMIT = 50;
 
-    public static int NOW_BEFORE = 20;
+    public static int NOW_BEFORE = 24000;
 }
