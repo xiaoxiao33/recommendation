@@ -2,7 +2,7 @@ package com.se.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.se.service.InvitationService;
-import com.se.service.RecommedationService;
+import com.se.service.RecommendationService;
 import com.se.vo.IntendVO;
 import com.se.vo.InvitationVO;
 import com.se.vo.UserBriefVO;
@@ -11,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -20,7 +18,7 @@ import java.util.List;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class EatLaterController {
     @Autowired
-    private RecommedationService recommedationService;
+    private RecommendationService recommedationService;
 
     @Autowired
     private InvitationService invitationService;

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 
-public interface RecommedationService {
+public interface RecommendationService {
     // match by intend slots
     // match by not busy slots
     public List<UserBriefVO> getRecommendation(IntendVO intendVO, int uid);

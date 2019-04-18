@@ -7,4 +7,10 @@ public class IntendVO {
     public String startTime;
     public String endTime;
     public IntendVO(){}
+
+    public IntendVO(int id, String start, String end) {
+        this.userId = id;
+        this.startTime = start;
+        this.endTime = end;
+    }
 }

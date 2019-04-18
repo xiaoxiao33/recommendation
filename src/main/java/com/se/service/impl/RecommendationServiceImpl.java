@@ -6,7 +6,7 @@ import com.se.exception.ResourceNotFoundException;
 import com.se.repository.LocationRepository;
 import com.se.repository.ScheduleRepository;
 import com.se.repository.UserProfileRepository;
-import com.se.service.RecommedationService;
+import com.se.service.RecommendationService;
 import com.se.Model.UserProfile;
 import com.se.util.ConstValue;
 import com.se.util.DistanceHelper;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class RecommendationServiceImpl implements RecommedationService {
+public class RecommendationServiceImpl implements RecommendationService {
 
     @Autowired
     private ScheduleRepository scheduleRepository;
