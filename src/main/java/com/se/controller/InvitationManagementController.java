@@ -1,26 +1,26 @@
 package com.se.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.se.exception.DataServiceOperationException;
 import com.se.repository.InvitationRepository;
 import com.se.repository.ScheduleRepository;
 import com.se.repository.UserProfileRepository;
-import com.se.util.InvitationStatus;
+import com.se.service.InvitationService;
 import com.se.vo.InvitationBriefVO;
-import com.se.vo.InvitationVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @RestController
 @RequestMapping("/invitation")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class InvitationManagementController {
+
+    @Autowired
+    private InvitationService invitationService;
+
 
     private final InvitationRepository invitationRepository;
     private final ScheduleRepository scheduleRepository;
@@ -41,16 +41,8 @@ public class InvitationManagementController {
      * @return  invitation received by the user from others that needs to be processed.
      */
     @GetMapping("/pending/{id}")
-    public ResponseEntity<List<InvitationBriefVO>> getReceivedInvitations(@PathVariable("id") int id) {
-        List<InvitationVO> activeInvites =
-                invitationRepository.getInvitationsByStatus(id, InvitationStatus.ACTIVE);
-        List<InvitationBriefVO> pendingInvites = new ArrayList<>();
-        for (InvitationVO invitationVo : activeInvites) {
-//            System.out.println("id:" + id + " receiverId:" + invitationVo.getReceiverId());
-            if (invitationVo.receiverId == id) {
-                pendingInvites.add(buildInvitationBriefVo(invitationVo));
-            }
-        }
+    public ResponseEntity<List<InvitationBriefVO>> getPendingInvitations(@PathVariable("id") int id) {
+        List<InvitationBriefVO> pendingInvites = invitationService.getPendingInvitation(id);
         return new ResponseEntity<>(pendingInvites, HttpStatus.OK);
     }
 
@@ -59,16 +51,8 @@ public class InvitationManagementController {
      * @return  invitations sent out by the user that wait for others' responses
      */
     @GetMapping("/waiting/{id}")
-    public ResponseEntity<List<InvitationBriefVO>> getNonrespInvitations(@PathVariable("id") int id) {
-        List<InvitationVO> activeInvites =
-
-                invitationRepository.getInvitationsByStatus(id, InvitationStatus.ACTIVE);
-        List<InvitationBriefVO> waitingInvites = new ArrayList<>();
-        for (InvitationVO invitationVo : activeInvites) {
-            if (invitationVo.senderId == id) {
-                waitingInvites.add(buildInvitationBriefVo(invitationVo));
-            }
-        }
+    public ResponseEntity<List<InvitationBriefVO>> getWaitingInvitations(@PathVariable("id") int id) {
+        List<InvitationBriefVO> waitingInvites = invitationService.getWaitingInvitation(id);
         return new ResponseEntity<>(waitingInvites, HttpStatus.OK);
 
     }
@@ -79,18 +63,7 @@ public class InvitationManagementController {
      */
     @GetMapping("/upcoming/{id}")
     public ResponseEntity<List<InvitationBriefVO>> getUpcomingInvitations(@PathVariable("id") int id) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(PATTERN);
-        String date = simpleDateFormat.format(new Date());
-
-        List<InvitationVO> acceptedInvites = invitationRepository.getAcceptedInvitationsByTime(id, date);
-
-        System.out.println("Current date: " + date);
-        System.out.println("This is accepted invites : " + JSON.toJSONString( acceptedInvites));
-        List<InvitationBriefVO> upcomingInvites = new ArrayList<>();
-        for (InvitationVO invitationVO : acceptedInvites) {
-            upcomingInvites.add(buildInvitationBriefVo(invitationVO));
-        }
-
+        List<InvitationBriefVO> upcomingInvites = invitationService.getUpcomingInvitation(id);
         return new ResponseEntity<>(upcomingInvites, HttpStatus.OK);
     }
 
@@ -102,41 +75,15 @@ public class InvitationManagementController {
     @PostMapping("/accept")
     public ResponseEntity<HttpStatus> acceptInvitation(@RequestParam("invitation_id") int invitationId) {
         // Check if the invitation is still active
-        InvitationStatus status = invitationRepository.checkInvitationStatus(invitationId);
-
-        if (status == InvitationStatus.ACTIVE) {
-            InvitationVO currentInvite = invitationRepository.getInvitationById(invitationId);
-            int receiverId = currentInvite.receiverId;
-            int senderId = currentInvite.senderId;
-            String startTime = currentInvite.start;
-            String endTime = currentInvite.end;
-
-            try {
-                invitationRepository.setInvitationStatusAccepted(invitationId);
-                invitationRepository.setInvitationStatusRejected(receiverId, startTime);
-                scheduleRepository.addSlot(receiverId, startTime, endTime);
-                scheduleRepository.addSlot(senderId, startTime, endTime);
-            } catch (DataServiceOperationException ex) {
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        try {
+            boolean succeeded = invitationService.acceptInvitation(invitationId);
+            if (succeeded) {
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
             }
-            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (DataServiceOperationException ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        // An invitation is no longer active
-        return new ResponseEntity<>(HttpStatus.CONFLICT);
-    }
-
-
-    private InvitationBriefVO buildInvitationBriefVo(InvitationVO invitationVO) {
-        InvitationBriefVO invitationBriefVO = new InvitationBriefVO(invitationVO);
-        invitationBriefVO.rName = this.userProfileRepository.findProfileById(invitationVO.receiverId).get().getUsername();
-        invitationBriefVO.sName = this.userProfileRepository.findProfileById(invitationVO.senderId).get().getUsername();
-        return invitationBriefVO;
-    }
-
-    public static void main(String[] args) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(PATTERN);
-        String date = simpleDateFormat.format(new Date());
-        System.out.println(date);
     }
 }

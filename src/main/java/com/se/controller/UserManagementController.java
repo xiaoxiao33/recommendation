@@ -1,17 +1,13 @@
 package com.se.controller;
 
-import com.se.exception.ResourceNotFoundException;
-import com.se.model.UserInfo;
 import com.se.Model.UserProfile;
+import com.se.model.UserInfo;
 import com.se.repository.UserInfoRepository;
 import com.se.repository.UserProfileRepository;
 import com.se.service.PasswordSecurityService;
-import org.hibernate.validator.constraints.pl.REGON;
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -22,14 +18,16 @@ import java.util.Optional;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserManagementController  {
 
-    private final UserProfileRepository userProfileRepository;
-    private final UserInfoRepository userInfoRepository;
+    @Autowired
+    private UserProfileRepository userProfileRepository;
+    @Autowired
+    private UserInfoRepository userInfoRepository;
 
-    public UserManagementController(UserProfileRepository userProfileRepository, UserInfoRepository userInfoRepository){
-        super();
-        this.userProfileRepository = userProfileRepository;
-        this.userInfoRepository = userInfoRepository;
-    }
+//    public UserManagementController(UserProfileRepository userProfileRepository, UserInfoRepository userInfoRepository){
+//        super();
+//        this.userProfileRepository = userProfileRepository;
+//        this.userInfoRepository = userInfoRepository;
+//    }
 
 
     @GetMapping("/admin/profiles")

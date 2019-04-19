@@ -1,24 +1,21 @@
 package com.se.repository.impl;
+
 import com.se.Model.Invitation;
-// import com.alibaba.fastjson.JSON;
-import com.se.Model.Invitation;
-import com.se.exception.DataServiceOperationException;
 import com.se.repository.InvitationRepository;
 import com.se.util.InvitationStatus;
-import com.se.vo.BusyVO;
 import com.se.vo.InvitationVO;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
+// import com.alibaba.fastjson.JSON;
 
 @Repository
 public class InvitationRepositoryImpl implements InvitationRepository {
@@ -184,7 +181,7 @@ public class InvitationRepositoryImpl implements InvitationRepository {
      * @param startTime search for all active invitation entries with start field the same as startTime in database
      * @return return if all associated invitation entries are updated to REJECTED, throw exception otherwise.
      */
-    public void setInvitationStatusRejected(int uid, String startTime) throws DataServiceOperationException {
+    public void setInvitationStatusRejected(int uid, String startTime)  {
         SessionFactory factory = new Configuration().configure().buildSessionFactory();
 
         Transaction transaction = null;
@@ -218,7 +215,7 @@ public class InvitationRepositoryImpl implements InvitationRepository {
      * @param invitationId
      * @return return if invitation status is set to be ACCEPTED successfully, throw exception otherwise.
      */
-    public void setInvitationStatusAccepted(int invitationId) throws DataServiceOperationException {
+    public void setInvitationStatusAccepted(int invitationId) {
         SessionFactory factory = new Configuration().configure().buildSessionFactory();
 
         Transaction transaction = null;

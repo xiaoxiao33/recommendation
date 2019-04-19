@@ -1,6 +1,5 @@
 package com.se.repository;
 
-import com.se.exception.DataServiceOperationException;
 import com.se.util.InvitationStatus;
 import com.se.vo.InvitationVO;
 
@@ -44,9 +43,9 @@ public interface InvitationRepository {
      *
      * @param uid, search for all invitation entries with recieverId or sendId equal to uid
      * @param startTime, search for all invitation entries with start field the same as startTime in database
-     * @return return if all associated invitation entries are updated to REJECTED, throw exception otherwise.
+     * @return return if all associated invitation entries are updated to REJECTED.
      */
-    public void setInvitationStatusRejected(int uid, String startTime) throws DataServiceOperationException;
+    public void setInvitationStatusRejected(int uid, String startTime);
 
 
     /**
@@ -54,7 +53,7 @@ public interface InvitationRepository {
      * @param invitationId
      * @return return if invitation status is set to be ACCEPTED successfully, throw exception otherwise.
      */
-    public void setInvitationStatusAccepted(int invitationId) throws DataServiceOperationException;
+    public void setInvitationStatusAccepted(int invitationId);
 
 
     /**
