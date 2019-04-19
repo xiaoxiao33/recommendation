@@ -1,10 +1,8 @@
 package com.se.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.se.service.InvitationService;
-import com.se.service.RecommendationService;
-import com.se.vo.IntendVO;
-import com.se.vo.UserBriefVO;
+import com.se.repository.UserInfoRepository;
+import com.se.model.UserInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -32,28 +30,15 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-public class EatLaterControllerTest {
-    @Autowired
-    private MockMvc mockMvc;
-    @MockBean
-    private RecommendationService recommendationService;
-    @MockBean
-    private InvitationService invitationService;
+public class UserInfoRepositoryTest {    
+    @Test
+    public void testEmail() throws Exception{
+        UserInfoRepository u = new UserInfoRepository();
+        String email_t = "ha@yale.edu";
+        UserInfo user = UserInfo.builder().password("woshidalao").email(email_t).build();
 
-    /**
-     * IntendVO:
-     * @throws Exception
-     */
-    public void getRecommendationList() throws Exception {
-        IntendVO intendVO = new IntendVO(1, "2019-04-05-09-45", "2019-04-05-10-30");
-        List<UserBriefVO> list = new ArrayList<>();
-        Mockito.when(recommendationService.getRecommendation(intendVO, intendVO.userId)).thenReturn(list);
-        RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .post("/eatLater/recommendation")
-                .accept(MediaType.APPLICATION_JSON).content(JSON.toJSONString(intendVO))
-                .contentType(MediaType.APPLICATION_JSON);
-        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
-        MockHttpServletResponse response = result.getResponse();
-        assertEquals(response.getErrorMessage(), null);
+        u.saveInfo(user);
+
+        assertEquals(u.findInfoByEmail(email_t).get().getEmail(), user.getEmail());
     }
 }
