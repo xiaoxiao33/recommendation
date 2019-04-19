@@ -40,20 +40,24 @@ public class EatLaterControllerTest {
     @MockBean
     private InvitationService invitationService;
 
+
     /**
      * IntendVO:
      * @throws Exception
      */
+    @Test
     public void getRecommendationList() throws Exception {
+        // insert intendVO
         IntendVO intendVO = new IntendVO(1, "2019-04-05-09-45", "2019-04-05-10-30");
-        List<UserBriefVO> list = new ArrayList<>();
-        Mockito.when(recommendationService.getRecommendation(intendVO, intendVO.userId)).thenReturn(list);
+
+        // query intended match
+        Mockito.when(recommendationService.getRecommendation(intendVO, intendVO.userId)).thenReturn(new ArrayList<>());
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .post("/eatLater/recommendation")
                 .accept(MediaType.APPLICATION_JSON).content(JSON.toJSONString(intendVO))
                 .contentType(MediaType.APPLICATION_JSON);
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
         MockHttpServletResponse response = result.getResponse();
-        assertEquals(response.getErrorMessage(), null);
+        assertEquals(response.getStatus(), HttpStatus.OK.value());
     }
 }
