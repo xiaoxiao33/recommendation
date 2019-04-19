@@ -250,10 +250,14 @@ public class UserInfoRepository {
         UserInfoRepository u = new UserInfoRepository();
         // UserInfo user = UserInfo.builder().username("hahh").password("woshidalao").email("haaa@yale.edu").build();
         UserInfo user = UserInfo.builder().password("woshidalao").email("ha@yale.edu").build();
-
         u.saveInfo(user);
         user = UserInfo.builder().password("wobushidalao").email("fse@yale.edu").build();
         u.saveInfo(user);
+
+        Optional<UserInfo> opt = u.findInfoByEmail("ha@yale.edu");
+        System.out.println(opt);
+        opt = u.findInfoByEmail("yyy@yale.edu");
+        System.out.println(opt);
         // Optional<UserInfo> opt = u.findInfoByUsername("lala");
         // u.findAllInfo();
     }
