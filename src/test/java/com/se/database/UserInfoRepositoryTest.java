@@ -1,4 +1,4 @@
-package com.se.controller;
+package com.se.database;
 
 import com.alibaba.fastjson.JSON;
 import com.se.repository.UserInfoRepository;
