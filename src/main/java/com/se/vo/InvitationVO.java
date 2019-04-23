@@ -24,6 +24,10 @@ public class InvitationVO {
 
     public InvitationStatus status;
 
+    public String restaurant;
+
+    public String message;
+
     public InvitationVO(){}
 
     public InvitationVO(Invitation entity) {
@@ -35,5 +39,7 @@ public class InvitationVO {
         this.latitude = entity.getLatitude();
         this.longitude = entity.getLongitude();
         this.status = entity.getStatus();
+        this.message = entity.getMessage();
+        this.restaurant = entity.getRestaurant();
     }
 }
