@@ -16,6 +16,8 @@ public class InvitationBriefVO {
     public String end;
     public String rName;
     public String sName;
+    public String message;
+    public String restaurant;
 
     public InvitationBriefVO(){}
 
@@ -28,5 +30,7 @@ public class InvitationBriefVO {
         this.longitude = invitationVO.longitude;
         this.start = invitationVO.start;
         this.end = invitationVO.end;
+        this.message = invitationVO.message;
+        this.restaurant = invitationVO.restaurant;
     }
 }

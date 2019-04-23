@@ -48,4 +48,8 @@ public class Invitation {
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     InvitationStatus status;
+
+
+
+
 }

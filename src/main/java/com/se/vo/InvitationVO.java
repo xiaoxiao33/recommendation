@@ -22,11 +22,11 @@ public class InvitationVO {
 
     public double longitude;
 
-    public InvitationStatus status;
-
     public String restaurant;
 
     public String message;
+
+    public InvitationStatus status;
 
     public InvitationVO(){}
 
