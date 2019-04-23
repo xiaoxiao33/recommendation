@@ -39,6 +39,12 @@ public class Invitation {
     @Column(name = "longitude")
     double longitude;
 
+    @Column(name = "message")
+    String message;
+
+    @Column(name = "restaurant")
+    String restaurant;
+
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     InvitationStatus status;

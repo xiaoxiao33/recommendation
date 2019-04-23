@@ -40,6 +40,8 @@ public class InvitationRepositoryImpl implements InvitationRepository {
                     .latitude(invitation.latitude)
                     .longitude(invitation.longitude)
                     .status(invitation.status)
+                    .message(invitation.message)
+                    .restaurant(invitation.restaurant)
                     .build();
             /*end convert*/
             session.save(entity);
