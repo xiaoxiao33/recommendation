@@ -1,13 +1,13 @@
 package com.se.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.se.Model.UserLocation;
+import com.se.model.UserLocation;
 import com.se.exception.ResourceNotFoundException;
 import com.se.repository.LocationRepository;
 import com.se.repository.ScheduleRepository;
 import com.se.repository.UserProfileRepository;
 import com.se.service.RecommendationService;
-import com.se.Model.UserProfile;
+import com.se.model.UserProfile;
 import com.se.util.ConstValue;
 import com.se.util.DistanceHelper;
 import com.se.util.TimeStrHelper;

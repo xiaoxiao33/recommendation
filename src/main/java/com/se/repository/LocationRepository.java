@@ -1,7 +1,6 @@
 package com.se.repository;
 
-import com.se.vo.UserBriefVO;
-import com.se.Model.UserLocation;
+import com.se.model.UserLocation;
 import java.util.List;
 
 public interface LocationRepository {

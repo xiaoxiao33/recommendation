@@ -1,10 +1,8 @@
 package com.se.repository.impl;
 
-import com.se.Model.BusySlot;
-import com.se.Model.IntendSlot;
+import com.se.model.BusySlot;
+import com.se.model.IntendSlot;
 import com.se.repository.ScheduleRepository;
-import com.se.vo.IntendVO;
-import com.se.vo.InvitationVO;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
@@ -17,10 +15,7 @@ import org.hibernate.cfg.Configuration;
 
 
 import javax.persistence.criteria.*;
-import java.text.SimpleDateFormat;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Date;
 
 @Repository
 public class ScheduleRepositoryImpl implements ScheduleRepository {

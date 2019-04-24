@@ -1,4 +1,4 @@
-package com.se.Model;
+package com.se.model;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -14,12 +14,21 @@ import javax.persistence.Id;
 @Setter
 @Getter
 @Entity
-public class UserImage {
+public class UserInfo {
+
     @Id
+    @GeneratedValue(generator="increment")
     @Column(name = "u_id")
     private int id;
 
-    @Lob
-    @Column(name = "image")
-    private Byte[] image;
+    @Column(name = "passwd")
+    private String password;
+
+    @Column(name = "email")
+    private String email;
+
 }
+
+
+
+

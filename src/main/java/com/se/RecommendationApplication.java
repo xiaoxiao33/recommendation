@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @Configuration
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.se.service","com.se.repository","com.se.config","com.se.controller","com.se.Model"})
+@ComponentScan(basePackages = {"com.se.service","com.se.repository","com.se.config","com.se.controller", "com.se.model"})
 @EnableJpaAuditing
 public class RecommendationApplication {
 	public static void main(String[] args) {

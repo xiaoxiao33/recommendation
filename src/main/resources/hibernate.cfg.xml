@@ -51,11 +51,11 @@
 
         <!-- <mapping resource="com/hik/gss/sys/domain/User.hbm.xml" />-->
         <mapping class="com.se.model.UserInfo" />
-        <mapping class="com.se.Model.UserProfile" />
-        <mapping class="com.se.Model.Invitation" />
-        <mapping class="com.se.Model.IntendSlot" />
-        <mapping class="com.se.Model.BusySlot" />
-        <mapping class="com.se.Model.UserLocation" />
+        <mapping class="com.se.model.UserProfile" />
+        <mapping class="com.se.model.Invitation" />
+        <mapping class="com.se.model.IntendSlot" />
+        <mapping class="com.se.model.BusySlot" />
+        <mapping class="com.se.model.UserLocation" />
 
     </session-factory>
 

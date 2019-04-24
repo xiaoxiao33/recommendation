@@ -1,16 +1,25 @@
 package com.se.controller;
 
-import com.se.Model.UserProfile;
+import com.se.model.UserImage;
+import com.se.model.UserProfile;
 import com.se.model.UserInfo;
+import com.se.repository.UserImageRepository;
 import com.se.repository.UserInfoRepository;
 import com.se.repository.UserProfileRepository;
+import com.se.service.ImageService;
 import com.se.service.PasswordSecurityService;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +31,10 @@ public class UserManagementController  {
     private UserProfileRepository userProfileRepository;
     @Autowired
     private UserInfoRepository userInfoRepository;
+    @Autowired
+    private UserImageRepository userImageRepository;
+    @Autowired
+    private ImageService imageService;
 
 //    public UserManagementController(UserProfileRepository userProfileRepository, UserInfoRepository userInfoRepository){
 //        super();
@@ -131,6 +144,28 @@ public class UserManagementController  {
         userProfileRepository.updateProfile(userProfile);
         return new ResponseEntity<>("Updated successfully", HttpStatus.OK);
 
+    }
+
+    @GetMapping("/userProfile/{id}/image")
+    public ResponseEntity<String> getAvatar(@PathVariable("id") int id, HttpServletResponse response) throws IOException {
+        UserImage userImage = userImageRepository.findById(id).get();
+        if (userImage.getImage() != null) {
+            byte[] byteArray = new byte[userImage.getImage().length];
+            int i = 0;
+            for (Byte wrappedByte: userImage.getImage()) {
+                byteArray[i++] = wrappedByte;
+            }
+            response.setContentType("image/jpeg");
+            InputStream is = new ByteArrayInputStream(byteArray);
+            IOUtils.copy(is, response.getOutputStream());
+        }
+        return new ResponseEntity<>("Image rendered successfully", HttpStatus.OK);
+    }
+
+    @PostMapping("/userProfile/{id}/imageUpload")
+    public ResponseEntity<String> uploadAvatar(@PathVariable("id") int id, @RequestParam("imagefile")MultipartFile file) {
+        boolean isSaved = imageService.saveImageFile(id, file);
+        return new ResponseEntity<>("Image uploaded "+isSaved, HttpStatus.OK);
     }
 
 }

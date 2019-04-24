@@ -2,7 +2,7 @@ package com.se.database;
 
 import com.se.repository.UserInfoRepository;
 import com.se.repository.impl.ScheduleRepositoryImpl;
-import com.se.Model.UserInfo;
+import com.se.model.UserInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

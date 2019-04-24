@@ -1,6 +1,6 @@
 package com.se.vo;
 
-import com.se.Model.Invitation;
+import com.se.model.Invitation;
 import com.se.util.InvitationStatus;
 
 /**

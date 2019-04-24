@@ -1,4 +1,4 @@
-package com.se.Model;
+package com.se.model;
 
 import com.se.util.InvitationStatus;
 import lombok.*;

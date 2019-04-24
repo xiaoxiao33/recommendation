@@ -1,10 +1,7 @@
 package com.se.repository.impl;
 
-import com.se.Model.Invitation;
 import com.se.repository.LocationRepository;
-import com.se.Model.UserLocation;
-import com.se.util.InvitationStatus;
-import com.se.vo.InvitationVO;
+import com.se.model.UserLocation;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

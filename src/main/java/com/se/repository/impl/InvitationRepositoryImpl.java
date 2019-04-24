@@ -1,6 +1,6 @@
 package com.se.repository.impl;
 
-import com.se.Model.Invitation;
+import com.se.model.Invitation;
 import com.se.repository.InvitationRepository;
 import com.se.util.InvitationStatus;
 import com.se.vo.InvitationVO;
@@ -74,8 +74,8 @@ public class InvitationRepositoryImpl implements InvitationRepository {
             transaction = session.beginTransaction();
 
             CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Invitation> query = builder.createQuery(com.se.Model.Invitation.class);
-            Root<Invitation> root = query.from(com.se.Model.Invitation.class);
+            CriteriaQuery<Invitation> query = builder.createQuery(com.se.model.Invitation.class);
+            Root<Invitation> root = query.from(com.se.model.Invitation.class);
             query.select(root).where(builder.equal(root.get("invitationId"), invitationId));
             Query<Invitation> q = session.createQuery(query);
             //avoid exception, set max results as 1

@@ -1,27 +1,21 @@
 package com.se.repository;
 
-import com.se.Model.UserInfo;
-import com.se.Model.UserProfile;
+import com.se.model.UserInfo;
+import com.se.model.UserProfile;
 import com.se.service.PasswordSecurityService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
-import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLFeatureNotSupportedException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Repository

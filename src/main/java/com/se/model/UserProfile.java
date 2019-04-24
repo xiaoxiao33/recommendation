@@ -1,11 +1,9 @@
-package com.se.Model;
+package com.se.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
 
-import com.se.model.UserInfo;
 /**
  * This class represents an instance of user profile
  */

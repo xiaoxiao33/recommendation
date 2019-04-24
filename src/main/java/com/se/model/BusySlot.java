@@ -1,4 +1,4 @@
-package com.se.Model;
+package com.se.model;
 
 import lombok.*;
 
@@ -13,7 +13,7 @@ import javax.persistence.Id;
 @Setter
 @Getter
 @Entity
-public class IntendSlot {
+public class BusySlot {
     @Id
     @GeneratedValue(generator="increment")
     @Column(name = "id")
@@ -27,5 +27,4 @@ public class IntendSlot {
 
     @Column(name = "end_time")
     String endTime;
-
 }
