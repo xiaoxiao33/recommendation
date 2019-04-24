@@ -11,6 +11,7 @@ import com.se.service.PasswordSecurityService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -155,7 +156,7 @@ public class UserManagementController  {
             for (Byte wrappedByte: userImage.getImage()) {
                 byteArray[i++] = wrappedByte;
             }
-            response.setContentType("image/jpeg");
+            response.setContentType(MediaType.IMAGE_JPEG_VALUE);
             InputStream is = new ByteArrayInputStream(byteArray);
             IOUtils.copy(is, response.getOutputStream());
         }
