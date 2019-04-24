@@ -52,6 +52,7 @@
         <!-- <mapping resource="com/hik/gss/sys/domain/User.hbm.xml" />-->
         <mapping class="com.se.model.UserInfo" />
         <mapping class="com.se.model.UserProfile" />
+        <mapping class="com.se.model.UserImage" />
         <mapping class="com.se.model.Invitation" />
         <mapping class="com.se.model.IntendSlot" />
         <mapping class="com.se.model.BusySlot" />

@@ -14,7 +14,12 @@ import javax.persistence.Id;
 @Setter
 @Getter
 @Entity
+@Table(name = "userimage")
 public class UserImage {
+//    public UserImage (int id, byte[] image) {
+//        this.id = id;
+//        this.image = image;
+//    }
     @Id
     @Column(name = "u_id")
     private int id;
