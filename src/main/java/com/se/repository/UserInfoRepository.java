@@ -1,5 +1,6 @@
 package com.se.repository;
 
+import com.se.model.UserImage;
 import com.se.model.UserInfo;
 import com.se.model.UserProfile;
 import com.se.service.PasswordSecurityService;
@@ -46,6 +47,8 @@ public class UserInfoRepository {
 
             UserProfile profile = new UserProfile(user);
             session.save(profile);
+            UserImage userImage = UserImage.builder().id(profile.getId()).build();
+            session.save(userImage);
 
             transaction.commit();
             session.close();
