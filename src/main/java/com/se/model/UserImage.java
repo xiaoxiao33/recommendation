@@ -26,5 +26,5 @@ public class UserImage {
 
     @Lob
     @Column(name = "image")
-    private Byte[] image;
+    private byte[] image;
 }

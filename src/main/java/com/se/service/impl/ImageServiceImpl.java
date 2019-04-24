@@ -23,13 +23,13 @@ public class ImageServiceImpl implements ImageService {
     public boolean saveImageFile(int uid, MultipartFile file) {
         try {
             UserImage userImage = UserImage.builder().id(uid).build();
-            Byte[] byteObjects = new Byte[file.getBytes().length];
+            byte[] byteObjects = new byte[file.getBytes().length];
             int i = 0;
             for (byte b : file.getBytes()) {
                 byteObjects[i++] = b;
             }
             userImage.setImage(byteObjects);
-            userImageRepositoryImpl.save(userImage);
+            userImageRepositoryImpl.updateImage(userImage);
             return true;
         } catch (IOException e) {
             e.printStackTrace();
