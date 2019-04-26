@@ -21,21 +21,6 @@ public class InvitationManagementController {
     @Autowired
     private InvitationService invitationService;
 
-
-    private final InvitationRepository invitationRepository;
-    private final ScheduleRepository scheduleRepository;
-    private final UserProfileRepository userProfileRepository;
-
-    private final static String PATTERN = "yyyy-MM-dd-HH-MM";
-
-    public InvitationManagementController(InvitationRepository invitationRepository,
-                                          ScheduleRepository scheduleRepository,
-                                          UserProfileRepository userProfileRepository) {
-        this.invitationRepository = invitationRepository;
-        this.scheduleRepository = scheduleRepository;
-        this.userProfileRepository = userProfileRepository;
-    }
-
     /**
      * @param id
      * @return  invitation received by the user from others that needs to be processed.

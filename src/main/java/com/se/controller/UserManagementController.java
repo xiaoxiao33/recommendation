@@ -37,24 +37,33 @@ public class UserManagementController  {
     @Autowired
     private ImageService imageService;
 
-//    public UserManagementController(UserProfileRepository userProfileRepository, UserInfoRepository userInfoRepository){
-//        super();
-//        this.userProfileRepository = userProfileRepository;
-//        this.userInfoRepository = userInfoRepository;
-//    }
-
-
+    /**
+     *
+     * @return all the currently available user profiles
+     */
     @GetMapping("/admin/profiles")
     public List<UserProfile> getAllProfile(){
         return this.userProfileRepository.findAllProfile();
     }
 
 
+    /**
+     *
+     * @return all the currently registered users info
+     */
     @GetMapping("/admin/users")
     public List<UserInfo> getAllUsers(){
         return this.userInfoRepository.findAllInfo();
     }
 
+
+    /**
+     *
+     * @param email user email
+     * @param password password
+     * @param session
+     * @return login in successfully if a information is correct
+     */
 
     @PostMapping("/login")
     public ResponseEntity<String> getUser( @RequestParam("email") String email,
@@ -63,7 +72,7 @@ public class UserManagementController  {
         Optional<UserInfo> userInfo = userInfoRepository.findInfoByEmail(email);
         if(userInfo.isPresent()){
             if (PasswordSecurityService.checkPass(password, userInfo.get().getPassword())) {
-                session.setAttribute("id", userInfo.get().getId());
+                //session.setAttribute("id", userInfo.get().getId());
                 return new ResponseEntity<String>(String.valueOf(userInfo.get().getId()), HttpStatus.OK);
             }
         }
@@ -72,6 +81,13 @@ public class UserManagementController  {
     }
 
 
+    /**
+     *
+     * @param email using yale email to register
+     * @param password
+     * @param session
+     * @return
+     */
     @PostMapping("/register")
     public ResponseEntity<Integer> addUser(@RequestParam("email") String email,
                                           @RequestParam("password") String password,
@@ -94,10 +110,16 @@ public class UserManagementController  {
         this.userInfoRepository.saveInfo(newUserInfo);
 
         // Save id to session
-        session.setAttribute("id", newUserInfo.getId());
+        //session.setAttribute("id", newUserInfo.getId());
         return new ResponseEntity<Integer>(newUserInfo.getId(), HttpStatus.CREATED);
 
     }
+
+    /**
+     *
+     * @param id user id
+     * @return profile information of the user
+     */
 
     @GetMapping("/userProfile/{id}")
     public ResponseEntity<?> getUserProfile(@PathVariable("id") int id){
@@ -107,7 +129,21 @@ public class UserManagementController  {
         }
         return new ResponseEntity<>("User not found with id: " + id, HttpStatus.NOT_FOUND);
     }
-   
+
+    /**
+     *
+     * @param uid
+     * @param genderS
+     * @param major
+     * @param college
+     * @param ageS
+     * @param year
+     * @param availability if the user wants himself to be recommended to others ("T" or "F")
+     * @param description
+     * @param username
+     * @param shareGps if the user wants to share GPS ("T" or "F")
+     * @return a message indicating if the profile is updated
+     */
     @PostMapping("/updateProfile")
     public ResponseEntity<String> updateUserProfile(@RequestParam("uid") String uid,
                                                     @RequestParam("gender") String genderS,
@@ -147,6 +183,14 @@ public class UserManagementController  {
 
     }
 
+    /**
+     *
+     * @param id
+     * @param response
+     * @return
+     * @throws IOException
+     */
+
     @GetMapping("/userProfile/{id}/image")
     public ResponseEntity<String> getAvatar(@PathVariable("id") int id, HttpServletResponse response) throws IOException {
         UserImage userImage = userImageRepository.findById(id).get();
@@ -163,6 +207,12 @@ public class UserManagementController  {
         return new ResponseEntity<>("Image rendered successfully", HttpStatus.OK);
     }
 
+    /**
+     *
+     * @param id
+     * @param file
+     * @return
+     */
     @PostMapping("/userProfile/{id}/imageUpload")
     public ResponseEntity<String> uploadAvatar(@PathVariable("id") int id, @RequestParam("imagefile")MultipartFile file) {
         boolean isSaved = imageService.saveImageFile(id, file);
