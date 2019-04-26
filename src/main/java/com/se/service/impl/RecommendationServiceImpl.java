@@ -48,8 +48,6 @@ public class RecommendationServiceImpl implements RecommendationService {
         /* match by slots */
         List<Integer> intendMatchList = scheduleRepository.findByMatchedSlot(uid, intendVO.startTime, intendVO.endTime);
         List<Integer> busyMatchList = scheduleRepository.findByNonConlictSlot(uid, intendVO.startTime, intendVO.endTime);
-        // TODO:
-        // deduplicate
         Set<Integer> set = new HashSet<>();
         List<Integer> mergedList = new ArrayList<>();
         for (int i: intendMatchList) {
@@ -59,7 +57,7 @@ public class RecommendationServiceImpl implements RecommendationService {
             }
         }
 
-        /* filter by other info ...*/
+        /* filter by other info: college, major, gender and so on*/
         // TODO
 
         //add res
@@ -117,7 +115,6 @@ public class RecommendationServiceImpl implements RecommendationService {
         PriorityQueue<Distance> pq = new PriorityQueue<>();   // min heap
         for (UserLocation userLocation: list) {
             double dist = DistanceHelper.distance(vo.latitude, vo.longitude, userLocation.getLatitude(), userLocation.getLongitude());
-//            System.out.println("distance calculator: "+dist);
             pq.offer(new Distance(userLocation.getId(), dist));
             if (pq.size() > ConstValue.EATNOW_RECOM_LIMIT) {
                 pq.poll();
@@ -128,7 +125,6 @@ public class RecommendationServiceImpl implements RecommendationService {
         System.out.println("limit:" + limit);
         for (int i = 0; i < limit; i++) {
             Distance dobj = pq.poll();
-//            System.out.println("selected distance:" + dobj.dist);
             if (!cache.containsKey(dobj.uid)) {
                 UserBriefVO userBriefVO = this.makeUserBriefVO(dobj.uid, dobj.dist);
                 cache.put(dobj.uid, userBriefVO);

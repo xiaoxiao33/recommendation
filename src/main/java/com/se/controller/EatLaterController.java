@@ -34,7 +34,6 @@ public class EatLaterController {
     public ResponseEntity<List<UserBriefVO>> getRecommendationList(@RequestBody IntendVO intendInfo) {
         System.out.println("IntendVO: "+JSON.toJSONString(intendInfo));
         List<UserBriefVO> list = recommedationService.getRecommendation(intendInfo, intendInfo.userId);
-//        List<UserBriefVO> list = new ArrayList<>();
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
@@ -47,10 +46,6 @@ public class EatLaterController {
     @PostMapping("/sendInvitation")
     @ResponseBody
     public ResponseEntity<String> sendInvitation(@RequestBody InvitationVO invitationVO) {
-//        System.out.println(uid + ":" + invitationVO.getSenderId() + "," + invitationVO.getReceiverId());
-//        if (uid != invitationVO.getSenderId()) {
-//            return new ResponseEntity<>("Warning: sender id not match", HttpStatus.OK);
-//        }
         if (!invitationService.sendInvitation(invitationVO)) {
             return new ResponseEntity<>("send failed", HttpStatus.OK);
         }

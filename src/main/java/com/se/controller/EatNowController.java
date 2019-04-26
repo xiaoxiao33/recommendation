@@ -24,12 +24,22 @@ public class EatNowController {
     @Autowired
     private LocationRepository locationRepository;
 
+    /**
+     *
+     * @param vo uid, long, lati, and last time of updating location
+     * @return list of recently active users
+     */
     @PostMapping("/recommendation")
     public ResponseEntity<List<UserBriefVO>> getRecommendationList(@RequestBody RealTimeLocationVO vo) {
         List<UserBriefVO> list = recommedationService.getRealTimeRecommendation(vo);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    /**
+     *
+     * @param vo uid, long, lati (last update time should be left empty, wouldn't be used in this method)
+     * @return
+     */
     @PostMapping("/uploadLocation")
     public ResponseEntity<String> uploadLoctaion(@RequestBody RealTimeLocationVO vo) {
         System.out.println("RealTimeLocationVO: "+JSON.toJSONString(vo));
