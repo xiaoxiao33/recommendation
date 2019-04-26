@@ -3,7 +3,7 @@ package com.se.repository;
 import com.se.model.UserImage;
 import com.se.model.UserInfo;
 import com.se.model.UserProfile;
-import com.se.service.PasswordSecurityService;
+import com.se.security.PasswordSecurityService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;

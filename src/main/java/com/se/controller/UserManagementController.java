@@ -7,7 +7,7 @@ import com.se.repository.UserImageRepository;
 import com.se.repository.UserInfoRepository;
 import com.se.repository.UserProfileRepository;
 import com.se.service.ImageService;
-import com.se.service.PasswordSecurityService;
+import com.se.security.PasswordSecurityService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

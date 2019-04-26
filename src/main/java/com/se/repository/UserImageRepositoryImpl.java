@@ -1,10 +1,6 @@
 package com.se.repository;
 
 import com.se.model.UserImage;
-import com.se.model.UserInfo;
-import com.se.model.UserProfile;
-import com.se.repository.UserImageRepository;
-import com.se.service.PasswordSecurityService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;

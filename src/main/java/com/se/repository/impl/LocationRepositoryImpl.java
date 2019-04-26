@@ -59,7 +59,7 @@ public class LocationRepositoryImpl implements LocationRepository {
      * @param longitude
      * @param userId
      */
-    public void addUserLocation(double latitude, double longitude, int userId, String time) {
+    public boolean addUserLocation(double latitude, double longitude, int userId, String time) {
         SessionFactory factory = new Configuration().configure().buildSessionFactory();
 
         Transaction transaction = null;
@@ -72,13 +72,14 @@ public class LocationRepositoryImpl implements LocationRepository {
             transaction.commit();
             session.close();
             factory.close();
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
             if (transaction != null) {
                 transaction.rollback();
             }
+            return false;
         }
-        return;
     }
 
 
@@ -89,7 +90,7 @@ public class LocationRepositoryImpl implements LocationRepository {
      * @param userId
      */
 
-    public void updateUserLocation(double latitude, double longitude, int userId, String time) {
+    public boolean updateUserLocation(double latitude, double longitude, int userId, String time) {
         SessionFactory factory = new Configuration().configure().buildSessionFactory();
 
         Transaction transaction = null;
@@ -111,13 +112,14 @@ public class LocationRepositoryImpl implements LocationRepository {
             transaction.commit();
             session.close();
             factory.close();
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
             if (transaction != null) {
                 transaction.rollback();
             }
+            return false;
         }
-        return;
     }
 
     /**

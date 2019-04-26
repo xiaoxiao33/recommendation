@@ -25,7 +25,7 @@ public interface LocationRepository {
      * @param longitude
      * @param userId
      */
-    public void addUserLocation(double latitude, double longitude, int userId, String time);
+    public boolean addUserLocation(double latitude, double longitude, int userId, String time);
 
 
     /**
@@ -35,6 +35,6 @@ public interface LocationRepository {
      * @param userId
      */
 
-    public void updateUserLocation(double latitude, double longitude, int userId, String time);
+    public boolean updateUserLocation(double latitude, double longitude, int userId, String time);
 
 }
